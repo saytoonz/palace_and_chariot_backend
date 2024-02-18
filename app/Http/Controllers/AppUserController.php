@@ -136,13 +136,20 @@ public function update(Request $request)
         }
 
         $appUser->update($usrArray);
+
+        return response()->json([
+            'error' => false,
+            'msg' => "success",
+            'data' => new AppUserResources($appUser->refresh()),
+        ]);
+    }else{
+    return response()->json([
+        'error' => true,
+        'msg' => "No user found with this credentials",
+    ]);
     }
 
-    return response()->json([
-        'error' => false,
-        'msg' => "success",
-        'data' => new AppUserResources($appUser->refresh()),
-    ]);
+
 }
 
 
@@ -184,7 +191,56 @@ public function checkAndLogin(Request $request)
 
 public function deleteMyAccount(Request $request)
 {
-    # code...
-    return $request;
+    $validator = Validator::make(
+        $request->all(),
+        [
+            'fuid' => ['required', 'max:255', 'string'],
+            'user_id' => ['required', 'int'],
+            'email' => ['required', 'max:255', 'email', 'string'],
+            'reason' => ['max:255', 'string'],
+        ],
+    );
+
+    if ($validator->fails()) {
+        return response()->json([
+            "error" => true,
+            'msg' => $validator->errors()->first(),
+        ]);
+    }
+
+
+    $appUser = AppUser::where('fuid', $request->fuid)
+        ->where('id', $request->user_id)
+        ->where('email', $request->email)
+        ->where('is_active', true)
+        ->where('is_banned', false)
+        ->where('is_deleted', false)
+        ->first();
+
+    if ($appUser) {
+
+        $userArray = [];
+        if ($request->reason) {
+            $userArray["delete_reason"] = $request->reason;
+        }
+        $userArray["fuid"] = 'deleted_'.date('Y-m-d H:i:s').'_'.$appUser->fuid;
+        $userArray["email"] = 'deleted_'.date('Y-m-d H:i:s').'_'.$appUser->email;
+        $userArray["username"] = 'deleted_'.date('Y-m-d H:i:s').'_'.$appUser->username;
+        $userArray["is_deleted"] = true;
+
+        // return $userArray;
+
+        $appUser->update($userArray);
+
+        return response()->json([
+            "error" => false,
+            'msg' => "Account has been deleted successfully",
+        ]);
+    } else {
+        return response()->json([
+            "error" => true,
+            'msg' => "No user found with this credentials",
+        ]);
+    }
 }
 }

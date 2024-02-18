@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('is_banned')->default(false);
             $table->boolean('is_deleted')->default(false);
+            $table->string('delete_reason')->nullable();
             $table->timestamps();
         });
     }
