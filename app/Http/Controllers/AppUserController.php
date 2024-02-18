@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AppUserResources;
 use App\Models\AppUser;
-// use App\Traits\ApiResponseTrait;
 use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class AppUserController extends Controller{
     use ImageTrait;
-    // use ApiResponseTrait;
 
 
 public function create(Request $request)
@@ -51,14 +49,8 @@ public function create(Request $request)
             }
         }
 
-    //     //Create a new channel for this user
-    //     $appUser->channel()->create([
-    //         'name' => $request->username,
-    //         'slug' => Str::slug($request->username, '-'),
-    //         'uuid' => $uuid,
-    //         'description' => $request->bio,
-    //         'image' => $appUser->image,
-    //     ]);
+        //Create a new notification settins for this user
+        $appUser->notiSetting()->create();
     }
     return response()->json([
         'error' => false,
@@ -92,7 +84,7 @@ public function update(Request $request)
     }
 
     //Create a new app user
-    $appUser = AppUser::where('id', $request->user_id)->where('fuid', $request->fuid)->where('is_active', true)
+    $appUser = AppUser::with('notiSetting')->where('id', $request->user_id)->where('fuid', $request->fuid)->where('is_active', true)
         ->where('is_banned', false)->where('is_deleted', false)->first();
 
     if ($appUser) {
@@ -171,7 +163,7 @@ public function checkAndLogin(Request $request)
     }
 
 
-    $appUser = AppUser::where('fuid', $request->fuid)->where('email', $request->email)
+    $appUser = AppUser::with('notiSetting')->where('fuid', $request->fuid)->where('email', $request->email)
         ->where('is_active', true)->where('is_banned', false)->where('is_deleted', false)
         ->first();
 
@@ -209,7 +201,7 @@ public function deleteMyAccount(Request $request)
     }
 
 
-    $appUser = AppUser::where('fuid', $request->fuid)
+    $appUser = AppUser::with('notiSetting')->where('fuid', $request->fuid)
         ->where('id', $request->user_id)
         ->where('email', $request->email)
         ->where('is_active', true)
