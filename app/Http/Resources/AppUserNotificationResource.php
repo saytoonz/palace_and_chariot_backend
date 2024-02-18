@@ -17,7 +17,7 @@ class AppUserNotificationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "app_user_id" => $this->app_user_id == 1,
+            "app_user_id" => $this->app_user_id,
             "chat_box" => $this->chat_box == 1,
             "travel_ideas" => $this->travel_ideas == 1,
             "rentals" => $this->rentals == 1,

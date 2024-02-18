@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppUserController;
+use App\Http\Controllers\AppUserNotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,9 @@ Route::prefix('app')->group(function (){
     Route::post('check-and-login-user', [AppUserController::class, 'checkAndLogin']);
     Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
     // Route::get('get-all-app-users', [AppUserController::class, 'getAllAppUsers']);
+
+
+    Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
 
 
 });
