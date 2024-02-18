@@ -144,4 +144,47 @@ public function update(Request $request)
         'data' => new AppUserResources($appUser->refresh()),
     ]);
 }
+
+
+public function checkAndLogin(Request $request)
+{
+    $validator = Validator::make(
+        $request->all(),
+        [
+            'fuid' => ['required', 'max:255', 'string'],
+            'email' => ['required', 'max:255', 'email', 'string'],
+        ],
+    );
+
+    if ($validator->fails()) {
+        return response()->json([
+            "error" => true,
+            'msg' => $validator->errors()->first(),
+        ]);
+    }
+
+
+    $appUser = AppUser::where('fuid', $request->fuid)->where('email', $request->email)
+        ->where('is_active', true)->where('is_banned', false)->where('is_deleted', false)
+        ->first();
+
+    if ($appUser) {
+        return response()->json([
+            "error" => false,
+            'msg' => "success",
+            'data' => new AppUserResources($appUser),
+        ]);
+    } else {
+        return response()->json([
+            "error" => true,
+            'msg' => "No user found with this credentials",
+        ]);
+    }
+}
+
+public function deleteMyAccount(Request $request)
+{
+    # code...
+    return $request;
+}
 }

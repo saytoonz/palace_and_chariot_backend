@@ -26,8 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('app')->group(function (){
     Route::post('create-user', [AppUserController::class, 'create']);
     Route::post('update-user', [AppUserController::class, 'update']);
-    // Route::post('check-and-login-user', [AppUserController::class, 'checkAndLogin']);
-    // Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
+    Route::post('check-and-login-user', [AppUserController::class, 'checkAndLogin']);
+    Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
     // Route::get('get-all-app-users', [AppUserController::class, 'getAllAppUsers']);
 
 
