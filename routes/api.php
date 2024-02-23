@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
+use App\Http\Controllers\SecurityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,10 +30,15 @@ Route::prefix('app')->group(function (){
     Route::post('update-user', [AppUserController::class, 'update']);
     Route::post('check-and-login-user', [AppUserController::class, 'checkAndLogin']);
     Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
-    // Route::get('get-all-app-users', [AppUserController::class, 'getAllAppUsers']);
 
 
     Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
+
+
+
+    Route::get('get-all-securities', [SecurityController::class, 'getAllSecurities']);
+    Route::get('get-security-client-type', [SecurityController::class, 'getSecurityClientType']);
+    Route::get('create-security-request', [SecurityController::class, 'createSecurityRequest']);
 
 
 });

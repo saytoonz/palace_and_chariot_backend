@@ -3,6 +3,7 @@
 namespace  App\Traits;
 
 use App\Http\Resources\AppUserResources;
+use App\Http\Resources\SecurityResource;
 
 trait ApiResponseTrait
 {
@@ -10,12 +11,8 @@ trait ApiResponseTrait
     public function ApiResponse(bool $status, $type, $message, $paginateData, $showHeaders = true)
     {
         $dataR = match($type){
-            // 'comment'=>CommentResource::collection($paginateData),
-            // 'video' => VideoResource::collection($paginateData),
-            // 'like' => LikeResource::collection($paginateData),
-            // 'channel'=>ChannelResource::collection($paginateData),
+            'security'=>SecurityResource::collection($paginateData),
             'app_user'=>AppUserResources::collection($paginateData),
-            // 'video-with-channel'=>VideoWithChannelResource::collection($paginateData),
         };
 
         $headers = [];
