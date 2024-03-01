@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\VehicleMakeController;
 use App\Http\Controllers\VehicleRentController;
@@ -40,6 +41,8 @@ Route::prefix('app')->group(function (){
     Route::get('get-vehicle-makes/{vehicleType}', [VehicleMakeController::class, 'getRentMakes']);
     Route::get('get-rent-vehicles/{vehicleType}/{makeId}/', [VehicleRentController::class, 'getRentVehicles']);
 
+    //
+    Route::post('toggle-favorite', [FavoriteController::class, 'toggleFavorite']);
 
     //Security
     Route::get('get-all-securities', [SecurityController::class, 'getAllSecurities']);
