@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SecurityClientType extends Model
+class VehicleRent extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function securityRequest(){
-        return $this->hasMany(SecurityRequest::class);
+    public function make(){
+        return $this->belongsTo(VehicleMake::class, 'vehicle_make_id');
     }
-
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('security_requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('app_user_id');
+            $table->unsignedBigInteger('app_user_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('country_code')->nullable();
             $table->string('phone')->nullable();
 
-            $table->unsignedBigInteger('security_client_type_id');
+            $table->unsignedBigInteger('security_client_type_id')->nullable();
 
             $table->string('status')->default('pending');
             $table->boolean('is_deleted')->default(false);

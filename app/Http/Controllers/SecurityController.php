@@ -38,14 +38,12 @@ class SecurityController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'app_user_id' => ['required', 'int'],
                 'first_name' => ['required', 'max:255', 'string'],
                 'last_name' => ['required', 'max:255', 'string'],
                 'email' => ['required', 'max:255', 'email', 'string'],
                 'country' => ['required', 'max:255', 'string'],
                 'country_code' => ['required', 'max:255', 'string'],
                 'phone' => ['required', 'max:255', 'string'],
-                'security_client_type_id' => ['max:255', 'int'],
             ],
         );
 
@@ -57,11 +55,11 @@ class SecurityController extends Controller
         }
 
 
-        $appUser =  $this->getAppUserWithUserId($request->app_user_id);
+       if(isset($request->app_user_id)){ $appUser =  $this->getAppUserWithUserId($request->app_user_id);
         if (!$appUser)  return response()->json([
             "error" => true,
             'msg' => "User not found",
-        ]);
+        ]);}
 
 
 

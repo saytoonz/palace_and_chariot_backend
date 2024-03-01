@@ -3,6 +3,8 @@
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\VehicleMakeController;
+use App\Http\Controllers\VehicleRentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,10 +37,14 @@ Route::prefix('app')->group(function (){
     Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
 
 
+    Route::get('get-vehicle-makes/{vehicleType}', [VehicleMakeController::class, 'getRentMakes']);
+    Route::get('get-rent-vehicles/{vehicleType}/{makeId}/', [VehicleRentController::class, 'getRentVehicles']);
 
+
+    //Security
     Route::get('get-all-securities', [SecurityController::class, 'getAllSecurities']);
     Route::get('get-security-client-type', [SecurityController::class, 'getSecurityClientType']);
-    Route::get('create-security-request', [SecurityController::class, 'createSecurityRequest']);
+    Route::post('create-security-request', [SecurityController::class, 'createSecurityRequest']);
 
 
 });

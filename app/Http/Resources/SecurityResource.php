@@ -15,7 +15,13 @@ class SecurityResource extends JsonResource
     public function toArray(Request $request): array
     {
         $parent = parent::toArray($request);
-        $parent["client_type"] = $this->clientType->client_type;
-        return $parent;
+        // $parent["client_type"] = $this->clientType->client_type;
+        return[
+            'id' => $this->id,
+            'title' => $this->title,
+            'image' =>env('APP_URL').$this->image,
+            'html_description' => $this->html_description,
+            'status' => $this->status,
+        ];
     }
 }

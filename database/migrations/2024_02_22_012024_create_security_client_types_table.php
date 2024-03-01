@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('security_client_types', function (Blueprint $table) {
             $table->id();
             $table->string('client_type');
-            $table->string('status');
+            $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
         });
     }

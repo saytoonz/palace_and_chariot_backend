@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('securities', function (Blueprint $table) {
+        Schema::create('vehicle_makes', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->string('image')->nullable();
-            $table->longText('html_description')->nullable();
+            $table->string('name');
+            $table->string('image');
+            $table->enum('vehicle_type',['car', 'bus', 'jet', 'car_bus','car_jet', 'bus_jet'])->default('car');
             $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('securities');
+        Schema::dropIfExists('vehicle_makes');
     }
 };
