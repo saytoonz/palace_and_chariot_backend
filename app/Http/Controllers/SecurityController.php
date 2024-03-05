@@ -55,11 +55,13 @@ class SecurityController extends Controller
         }
 
 
-       if(isset($request->app_user_id)){ $appUser =  $this->getAppUserWithUserId($request->app_user_id);
+       if(isset($request->app_user_id)){
+        $appUser =  $this->getAppUserWithUserId($request->app_user_id);
         if (!$appUser)  return response()->json([
             "error" => true,
             'msg' => "User not found",
-        ]);}
+        ]);
+    }
 
 
 

@@ -14,6 +14,10 @@ class VehicleRentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+       $array =  parent::toArray($request);
+       $array['isFavorite'] = $this->isFavorite($request->app_user_id);
+       $array['gallery'] = $this->gallery();
+       $array['keys'] = $this->keys();
+        return $array;
     }
 }
