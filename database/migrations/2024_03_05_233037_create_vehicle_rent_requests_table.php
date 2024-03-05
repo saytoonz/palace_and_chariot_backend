@@ -11,24 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('security_requests', function (Blueprint $table) {
+        Schema::create('vehicle_rent_requests', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBigInteger('app_user_id')->default(0);
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('email');
+            $table->string('name');
+            $table->string('address');
+            $table->string('city');
             $table->string('country')->nullable();
             $table->string('country_code')->nullable();
             $table->string('phone')->nullable();
+            $table->boolean('need_our_driver')->default(true);
 
-            $table->unsignedBigInteger('security_client_type_id')->nullable();
+            $table->string('driver_title')->nullable();
+            $table->string('driver_name')->nullable();
+            $table->string('driver_email')->nullable();
+            $table->string('driver_country_code')->nullable();
+            $table->string('driver_country')->nullable();
+            $table->string('driver_phone')->nullable();
+            $table->string('driver_license')->nullable();
+
 
             $table->string('status')->default('pending');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
-
-            // $table->foreign('app_user_id')->references('id')->on('app_users')
-            // ->oncascade('delete');
         });
     }
 
@@ -37,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('security_requests');
+        Schema::dropIfExists('vehicle_rent_requests');
     }
 };
