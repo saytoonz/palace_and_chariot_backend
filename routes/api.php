@@ -39,7 +39,7 @@ Route::prefix('app')->group(function (){
 
 
     Route::get('get-vehicle-makes/{vehicleType}', [VehicleMakeController::class, 'getRentMakes']);
-    Route::get('get-rent-vehicles/{vehicleType}/{makeId}/', [VehicleRentController::class, 'getRentVehicles']);
+    Route::get('get-rent-vehicles/{vehicleType}', [VehicleRentController::class, 'getRentVehicles']);
     Route::post('create-vehicle-rent-request', [VehicleRentController::class, 'createVehicleRentRequest']);
 
     //

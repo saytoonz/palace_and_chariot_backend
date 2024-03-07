@@ -14,9 +14,10 @@ class VehicleRentController extends Controller
     use ApiResponseTrait;
     use AppUserTrait;
 
-    function getRentVehicles($vehicleType, $makeId)
+    function getRentVehicles($vehicleType)
     {
-        $data =  VehicleRent::with(['make'])->where('vehicle_make_id', $makeId)->where('type', $vehicleType)->paginate();
+        // ->where('vehicle_make_id', $makeId)
+        $data =  VehicleRent::with(['make'])->where('type', $vehicleType)->paginate();
         return $this->ApiResponse(true, 'vehicle_rent', null, $data, true);
     }
 
@@ -26,6 +27,9 @@ class VehicleRentController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+                'pickup_location' => ['required', 'max:255', 'string'],
+                'pickup_date_time' => ['required', 'max:255', 'string'],
+                'dropoff_date_time' => ['required', 'max:255', 'string'],
                 'name' => ['required', 'max:255', 'string'],
                 'address' => ['required', 'max:255', 'string'],
                 'city' => ['required', 'max:255', 'string'],
@@ -42,7 +46,7 @@ class VehicleRentController extends Controller
                 'msg' => $validator->errors()->first(),
             ]);
         }
-        if (!$request->needOurDriver) {
+        if (!$request->need_our_driver) {
             $validator = Validator::make(
                 $request->all(),
                 [

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('model')->nullable();
             $table->string('color')->nullable();
             $table->double('price')->default(0);
+            $table->double('driver_fee')->default(0);
             $table->double('ratings_value')->default(5);
             $table->double('distance_away')->default(0);
             $table->boolean('available')->default(true);

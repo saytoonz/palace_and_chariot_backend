@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SecurityResource extends JsonResource
+class ImageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,9 @@ class SecurityResource extends JsonResource
     {
         return[
             'id' => $this->id,
-            'title' => $this->title,
             'image' =>env('APP_URL').$this->image,
-            'html_description' => $this->html_description,
+            'object_id' => $this->object_id,
+            'object_type' => $this->object_type,
             'status' => $this->status,
         ];
     }

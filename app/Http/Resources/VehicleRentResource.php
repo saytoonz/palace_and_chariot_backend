@@ -14,10 +14,22 @@ class VehicleRentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-       $array =  parent::toArray($request);
-       $array['isFavorite'] = $this->isFavorite($request->app_user_id);
-       $array['gallery'] = $this->gallery();
-       $array['keys'] = $this->keys();
-        return $array;
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "model" => $this->model,
+            "color" => $this->color,
+            "price" =>(double) $this->price,
+            "driver_fee" => (double) $this->driver_fee,
+            "distance_away"  =>(double) $this->distance_away,
+            "available" => (bool) $this->available,
+            "type" => $this->type,
+            "status" => $this->status,
+            "ratings_value" => (double)$this->ratings_value,
+            "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
+            "make" => $this->make,
+            "gallery" => ImageResource::collection($this->gallery()),
+            "keys" => VehicleKeyResource::collection( $this->keys()),
+        ];
     }
 }

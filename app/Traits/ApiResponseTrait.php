@@ -29,7 +29,8 @@ trait ApiResponseTrait
             'paginate' => $paginateData == NULL ? NULL : [
                 'previous_page_url' => $paginateData->appends(request()->input())->previousPageUrl(),
                 'next_page_url' => $paginateData->appends(request()->input())->nextPageUrl(),
-                'number_per_page' => $paginateData->perPage()
+                'number_per_page' => $paginateData->perPage(),
+                'total_items' => $paginateData->total(),
             ]
         ]));
     }
