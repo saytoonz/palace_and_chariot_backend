@@ -4,6 +4,7 @@ use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\TourismController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\VehicleMakeController;
 use App\Http\Controllers\VehicleRentController;
@@ -55,7 +56,9 @@ Route::prefix('app')->group(function (){
     Route::get('get-travel-locations', [TravelController::class, 'getLocations']);
     Route::post('create-travel-request', [TravelController::class, 'createtravelRequest']);
 
-
+    //Tourism
+    Route::get('get-tourisms-sites', [TourismController::class, 'getSites']);
+    Route::post('create-tour-request', [TourismController::class, 'createTourRequest']);
 
 });
 

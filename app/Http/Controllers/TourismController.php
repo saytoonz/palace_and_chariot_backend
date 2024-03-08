@@ -2,42 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TravelLocationResource;
-use App\Models\TravelLocations;
-use App\Models\TravelRequest;
+use App\Http\Resources\TourismResource;
+use App\Models\Tourism;
+use App\Models\TourismRequest;
 use App\Traits\AppUserTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class TravelController extends Controller
+class TourismController extends Controller
 {
     use AppUserTrait;
-    //
-    function getLocations()
+
+    function getSites()
     {
-        $data = TravelLocations::where('status', 'active')->get();
+        $data = Tourism::where('status', 'active')->get();
         return response()->json([
             'error' => false,
             'msg' => "success",
-            'data' => TravelLocationResource::collection($data),
+            'data' => TourismResource::collection($data),
         ]);
     }
 
-    function createtravelRequest(Request $request)
+
+
+
+    function createTourRequest(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
+                'tour_site_id' => ['required', 'int'],
                 'first_name' => ['required', 'max:255', 'string'],
                 'last_name' => ['required', 'max:255', 'string'],
                 'email' => ['required', 'max:255', 'email', 'string'],
                 'country' => ['required', 'max:255', 'string'],
                 'country_code' => ['required', 'max:255', 'string'],
                 'phone' => ['required', 'max:255', 'string'],
-                'depart_location_id' => ['required', 'int'],
-                'depart_date' => ['required', 'max:255', 'string'],
-                'return_location_id' => ['required', 'int'],
-                'return_date' => ['required', 'max:255', 'string'],
                 'children' => ['required', 'int'],
                 'adults' => ['required', 'int'],
             ],
@@ -60,7 +60,7 @@ class TravelController extends Controller
         }
 
         //Create a new Travel Request
-        $travelReq = TravelRequest::create($request->all());
+        $travelReq = TourismRequest::create($request->all());
         if ($travelReq) {
             return response()->json([
                 'error' => false,
