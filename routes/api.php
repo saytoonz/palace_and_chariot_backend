@@ -4,6 +4,7 @@ use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\TravelController;
 use App\Http\Controllers\VehicleMakeController;
 use App\Http\Controllers\VehicleRentController;
 use Illuminate\Http\Request;
@@ -49,6 +50,11 @@ Route::prefix('app')->group(function (){
     Route::get('get-all-securities', [SecurityController::class, 'getAllSecurities']);
     Route::get('get-security-client-type', [SecurityController::class, 'getSecurityClientType']);
     Route::post('create-security-request', [SecurityController::class, 'createSecurityRequest']);
+
+    //Travel
+    Route::get('get-travel-locations', [TravelController::class, 'getLocations']);
+    Route::post('create-travel-request', [TravelController::class, 'createtravelRequest']);
+
 
 
 });
