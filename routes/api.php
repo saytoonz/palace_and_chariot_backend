@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccommodationSaleController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\FavoriteController;
@@ -40,13 +41,19 @@ Route::prefix('app')->group(function (){
 
     Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
 
-    //Vehicles
+    ///Vehicles
+    //- Rentals
     Route::get('get-vehicle-makes/{vehicleType}', [VehicleMakeController::class, 'getRentMakes']);
     Route::get('get-rent-vehicles/{vehicleType}', [VehicleRentController::class, 'getRentVehicles']);
     Route::post('create-vehicle-rent-request', [VehicleRentController::class, 'createVehicleRentRequest']);
-    //Sale
+    //- Sale
     Route::get('get-sale-vehicles', [VehicleSaleController::class, 'getSaleVehicles']);
     Route::post('create-vehicle-sale-request', [VehicleSaleController::class, 'createVehicleSaleRequest']);
+
+   ///Accommodations
+    //- Sale
+    Route::get('get-sale-accomms', [AccommodationSaleController::class, 'getSaleAccomms']);
+    Route::post('create-accomm-sale-request', [AccommodationSaleController::class, 'createCallBackRequest']);
 
     //
     Route::post('toggle-favorite', [FavoriteController::class, 'toggleFavorite']);

@@ -38,6 +38,7 @@ class SecurityController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+                'security_id' => ['required', 'int'],
                 'first_name' => ['required', 'max:255', 'string'],
                 'last_name' => ['required', 'max:255', 'string'],
                 'email' => ['required', 'max:255', 'email', 'string'],

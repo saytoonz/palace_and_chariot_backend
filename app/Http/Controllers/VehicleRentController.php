@@ -27,6 +27,7 @@ class VehicleRentController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+                'vehicle_id' => ['required', 'int'],
                 'pickup_location' => ['required', 'max:255', 'string'],
                 'pickup_date_time' => ['required', 'max:255', 'string'],
                 'dropoff_date_time' => ['required', 'max:255', 'string'],

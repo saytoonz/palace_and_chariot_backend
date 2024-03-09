@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('image');
             $table->unsignedBigInteger('object_id');
-            $table->enum('object_type',['vehicle_rent','travel', 'tour','sale_vehicle'])->nullable();
+            $table->enum('object_type',['vehicle_rent','travel', 'tour','sale_vehicle','sale_accomm'])->nullable();
             $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
         });

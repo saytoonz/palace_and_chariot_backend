@@ -2,30 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VehicleSale;
-use App\Models\VehicleSaleRequest;
+use App\Models\AccommodationSale;
+use App\Models\AccommodationSaleRequest;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class VehicleSaleController extends Controller
+class AccommodationSaleController extends Controller
 {
     use ApiResponseTrait;
 
 
-    function getSaleVehicles()
+    function getSaleAccomms()
     {
-        $data =  VehicleSale::with(['make'])->paginate();
-        return $this->ApiResponse(true, 'vehicle_sale', null, $data, true);
+        $data =  AccommodationSale::paginate();
+        return $this->ApiResponse(true, 'accomm_sale', null, $data, true);
     }
 
 
-    function createVehicleSaleRequest(Request $request)
+
+    function createCallBackRequest(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'vehicle_id' => ['required', 'int'],
+                'accommodation_id' => ['required', 'int'],
                 'name' => ['required', 'max:255', 'string'],
                 'email' => ['required', 'email', 'string'],
                 'country_code' => ['required', 'max:255', 'string'],
@@ -41,8 +42,8 @@ class VehicleSaleController extends Controller
         }
 
 
-        //Create a new Vehicle Sale Request
-        $rentRequest = VehicleSaleRequest::create($request->all());
+        //Create a new Accommodation Sale Request
+        $rentRequest = AccommodationSaleRequest::create($request->all());
         if ($rentRequest) {
             return response()->json([
                 'error' => false,

@@ -5,16 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VehicleSale extends Model
+class AccommodationSale extends Model
 {
     use HasFactory;
-
-    public function make()
-    {
-        return $this->belongsTo(VehicleMake::class, 'vehicle_make_id');
-    }
-
-
 
     public function favorites()
     {
@@ -23,7 +16,7 @@ class VehicleSale extends Model
 
     public function isFavorite($userId)
     {
-        return (bool) $this->favorites->where('type', 'sale_vehicle')->where('app_user_id', $userId)->first();
+        return (bool) $this->favorites->where('type', 'sale_accomm')->where('app_user_id', $userId)->first();
     }
 
 
@@ -35,7 +28,7 @@ class VehicleSale extends Model
 
     public function gallery()
     {
-        return $this->allImages->where('object_type', 'sale_vehicle');
+        return $this->allImages->where('object_type', 'sale_accomm');
     }
 
 
@@ -47,8 +40,10 @@ class VehicleSale extends Model
 
     public function keys()
     {
-        return $this->vehicleKeys->where('object_type', 'sale_vehicle');
+        return $this->vehicleKeys->where('object_type', 'sale_accomm');
     }
+
+
 
 
     public function vehicleTextKeys()
@@ -58,6 +53,7 @@ class VehicleSale extends Model
 
     public function textKeys()
     {
-        return $this->vehicleTextKeys->where('object_type', 'sale_vehicle');
+        return $this->vehicleTextKeys->where('object_type', 'sale_accomm');
     }
+
 }
