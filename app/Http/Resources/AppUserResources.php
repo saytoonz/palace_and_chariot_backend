@@ -26,7 +26,7 @@ class AppUserResources extends JsonResource
             "phone" => $this->phone,
             "date_of_birth" => $this->date_of_birth,
             "gender" => $this->gender,
-            "image" => $this->image,
+            "image" => $this->image  ?env('APP_URL').$this->image : $this->image,
             "language" => $this->language,
             "is_active"=> $this->is_active == 1,
             "is_banned"=> $this->is_banned == 1,

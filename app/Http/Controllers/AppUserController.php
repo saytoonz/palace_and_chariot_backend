@@ -19,15 +19,8 @@ public function create(Request $request)
         $request->all(),
         [
             'fuid' => ['required', 'max:255', 'string', 'unique:app_users'],
-            'first_name' => ['required', 'max:255', 'string'],
-            'last_name' => ['required', 'max:255', 'string'],
-            'username' => ['required', 'min:3', 'max:255', 'string', 'unique:app_users'],
+            'username' => ['min:3', 'max:255', 'string', 'unique:app_users'],
             'email' => ['required', 'max:255', 'email', 'string', 'unique:app_users'],
-            'country' => ['max:255', 'string'],
-            'country_code' => ['max:255', 'string'],
-            'phone' => ['max:255', 'string'],
-            'date_of_birth' => [ 'max:255', 'string'],
-            'language' => ['max:255', 'string'],
         ],
     );
 
@@ -64,15 +57,10 @@ public function update(Request $request)
     $validator = Validator::make(
         $request->all(),
         [
-            'user_id' => ['required',  'int'],
-            'fuid' => ['required',  'string'],
+            'app_user_id' => ['required',  'int'],
             'first_name' => [ 'max:255', 'string'],
             'last_name' => [ 'max:255', 'string'],
-            'country' => ['max:255', 'string'],
-            'country_code' => ['max:255', 'string'],
             'phone' => ['max:255', 'string'],
-            'date_of_birth' => [ 'max:255', 'string'],
-            'language' => ['max:255', 'string'],
         ],
     );
 
@@ -84,7 +72,7 @@ public function update(Request $request)
     }
 
     //Create a new app user
-    $appUser = AppUser::with('notiSetting')->where('id', $request->user_id)->where('fuid', $request->fuid)->where('is_active', true)
+    $appUser = AppUser::with('notiSetting')->where('id', $request->app_user_id)->where('is_active', true)
         ->where('is_banned', false)->where('is_deleted', false)->first();
 
     if ($appUser) {

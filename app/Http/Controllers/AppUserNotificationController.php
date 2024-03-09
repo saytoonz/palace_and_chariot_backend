@@ -15,8 +15,7 @@ class AppUserNotificationController extends Controller
     $validator = Validator::make(
         $request->all(),
         [
-            'user_id' => ['required',  'int'],
-            'fuid' => ['required',  'string'],
+            'app_user_id' => ['required',  'int'],
             'chat_box' => ['bool'],
             'travel_ideas' => ['bool'],
             'rentals' =>['bool'],
@@ -34,7 +33,7 @@ class AppUserNotificationController extends Controller
     }
 
     //Create a new app user
-    $appUser = AppUser::with('notiSetting')->where('id', $request->user_id)->where('fuid', $request->fuid)->where('is_active', true)
+    $appUser = AppUser::with('notiSetting')->where('id', $request->app_user_id)->where('is_active', true)
         ->where('is_banned', false)->where('is_deleted', false)->first();
 
 
