@@ -5,6 +5,7 @@ namespace  App\Traits;
 use App\Http\Resources\AppUserResources;
 use App\Http\Resources\SecurityResource;
 use App\Http\Resources\VehicleRentResource;
+use App\Http\Resources\VehicleSaleResource;
 
 trait ApiResponseTrait
 {
@@ -15,6 +16,7 @@ trait ApiResponseTrait
             'security'=>SecurityResource::collection($paginateData),
             'app_user'=>AppUserResources::collection($paginateData),
             'vehicle_rent'=>VehicleRentResource::collection($paginateData),
+            'vehicle_sale'=>VehicleSaleResource::collection($paginateData),
         };
 
         $headers = [];

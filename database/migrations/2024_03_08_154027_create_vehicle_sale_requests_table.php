@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('vehicle_sale_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->unsignedBigInteger('object_id');
-            $table->enum('object_type',['vehicle_rent','travel', 'tour','sale_vehicle'])->nullable();
+            $table->unsignedBigInteger('app_user_id')->default(0);
+            $table->unsignedBigInteger('vehicle_id');
+            $table->string('name');
+            $table->string('email');
+            $table->string('country_code');
+            $table->string('phone');
             $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
         });
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('vehicle_sale_requests');
     }
 };

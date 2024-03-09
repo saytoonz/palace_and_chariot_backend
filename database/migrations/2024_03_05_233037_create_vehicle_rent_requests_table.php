@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('vehicle_rent_requests', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('vehicle_id');
+
 
             $table->unsignedBigInteger('app_user_id')->default(0);
             $table->string('pickup_location');

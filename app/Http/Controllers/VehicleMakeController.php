@@ -9,7 +9,14 @@ use Illuminate\Http\Request;
 class VehicleMakeController extends Controller
 {
     function getRentMakes($vehicleType) {
-        $data = VehicleMake::where('vehicle_type',$vehicleType)->where('image', '!=', null)->where('status','active')->get();
+        $data = VehicleMake::where(function($query) use ($vehicleType) {
+            $values  =  explode('_',$vehicleType);
+            $query->where('vehicle_type',  'LIKE', '%'.$values[0].'%');
+            if(count($values) > 1){
+                $query->orwhere('vehicle_type',  'LIKE', '%'.$values[1].'%');
+            }
+        })->where('image', '!=', null)->where('status','active')->get();
+
         return response()->json([
             'error' => false,
             'msg' => "success",

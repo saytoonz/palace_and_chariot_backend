@@ -8,6 +8,7 @@ use App\Http\Controllers\TourismController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\VehicleMakeController;
 use App\Http\Controllers\VehicleRentController;
+use App\Http\Controllers\VehicleSaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,10 +40,13 @@ Route::prefix('app')->group(function (){
 
     Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
 
-
+    //Vehicles
     Route::get('get-vehicle-makes/{vehicleType}', [VehicleMakeController::class, 'getRentMakes']);
     Route::get('get-rent-vehicles/{vehicleType}', [VehicleRentController::class, 'getRentVehicles']);
     Route::post('create-vehicle-rent-request', [VehicleRentController::class, 'createVehicleRentRequest']);
+    //Sale
+    Route::get('get-sale-vehicles', [VehicleSaleController::class, 'getSaleVehicles']);
+    Route::post('create-vehicle-sale-request', [VehicleSaleController::class, 'createVehicleSaleRequest']);
 
     //
     Route::post('toggle-favorite', [FavoriteController::class, 'toggleFavorite']);

@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('vehicle_text_keys', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->string('name');
+            $table->string('value');
             $table->unsignedBigInteger('object_id');
-            $table->enum('object_type',['vehicle_rent','travel', 'tour','sale_vehicle'])->nullable();
+            $table->enum('object_type',['sale_vehicle'])->nullable();
             $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
+
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('vehicle_text_keys');
     }
 };
