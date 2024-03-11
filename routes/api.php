@@ -5,6 +5,7 @@ use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\InAppNotificationController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\TourismController;
 use App\Http\Controllers\TravelController;
@@ -80,6 +81,9 @@ Route::prefix('app')->group(function (){
     Route::get('get-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{quantity}',[ ChatController::class, 'getChats']);
     Route::get('get-new-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{last_msg_id}',[ ChatController::class, 'getNewChats']);
 
+    //In app notificacion
+    Route::get('in-app-notifications/{app_user_id}', [InAppNotificationController::class, 'getUserInAppNorifications']);
+    Route::get('get-notification-object/{object_id}/{object_type}', [InAppNotificationController::class, 'getNotificationObject']);
 
 });
 

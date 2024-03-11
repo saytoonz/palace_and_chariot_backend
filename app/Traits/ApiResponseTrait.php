@@ -5,6 +5,7 @@ namespace  App\Traits;
 use App\Http\Resources\AccommodationSaleResource;
 use App\Http\Resources\AppUserResources;
 use App\Http\Resources\ChatResource;
+use App\Http\Resources\InAppNotificationResource;
 use App\Http\Resources\SecurityResource;
 use App\Http\Resources\VehicleRentResource;
 use App\Http\Resources\VehicleSaleResource;
@@ -21,6 +22,7 @@ trait ApiResponseTrait
             'vehicle_sale'=>VehicleSaleResource::collection($paginateData),
             'accomm_sale'=>AccommodationSaleResource::collection($paginateData),
             'chats'=>ChatResource::collection($paginateData),
+            'in_app_notification' => InAppNotificationResource::collection($paginateData),
         };
 
         $headers = [];
