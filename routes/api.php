@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccommodationSaleController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\TourismController;
@@ -70,6 +71,15 @@ Route::prefix('app')->group(function (){
     //Tourism
     Route::get('get-tourisms-sites', [TourismController::class, 'getSites']);
     Route::post('create-tour-request', [TourismController::class, 'createTourRequest']);
+
+
+
+    //Chat
+    Route::post('send-chat-message', [ChatController::class, 'sendMessage']);
+    Route::get('get-chat-list/{app_user_id}', [ChatController::class, 'getChatList']);
+    Route::get('get-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{quantity}',[ ChatController::class, 'getChats']);
+    Route::get('get-new-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{last_msg_id}',[ ChatController::class, 'getNewChats']);
+
 
 });
 
