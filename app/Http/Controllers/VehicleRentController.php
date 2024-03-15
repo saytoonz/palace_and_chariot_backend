@@ -14,11 +14,23 @@ class VehicleRentController extends Controller
     use ApiResponseTrait;
     use AppUserTrait;
 
-    function getRentVehicles($vehicleType)
+    function getRentVehicles(Request $request,  $vehicleType)
     {
         // ->where('vehicle_make_id', $makeId)
-        $data =  VehicleRent::with(['make'])->where('type', $vehicleType)->paginate();
-        return $this->ApiResponse(true, 'vehicle_rent', null, $data, true);
+        $query =  VehicleRent::with(['make'])->where('type', $vehicleType)
+        ->where(function ($query) use ($request) {
+                if (isset($request->make_id))   $query->where('vehicle_make_id', $request->make_id);
+            });
+
+        if ($request->price_asc == 'true') $query->orderBy('price', 'ASC');
+        if ($request->price_desc == 'true') $query->orderBy('price', 'DESC');
+        if ($request->distance_away == 'true') $query->orderBy('distance_away', 'ASC');
+        if ($request->ratings_asc == 'true') $query->orderBy('ratings_value', 'ASC');
+        if ($request->ratings_desc == 'true') $query->orderBy('ratings_value', 'DESC');
+
+
+        $reuslt =  $query->paginate();
+        return $this->ApiResponse(true, 'vehicle_rent', null, $reuslt, true);
     }
 
 

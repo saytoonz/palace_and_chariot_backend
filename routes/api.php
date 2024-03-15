@@ -4,6 +4,7 @@ use App\Http\Controllers\AccommodationSaleController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\EventServiceRentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\InAppNotificationController;
 use App\Http\Controllers\SecurityController;
@@ -56,6 +57,13 @@ Route::prefix('app')->group(function (){
     //- Sale
     Route::get('get-sale-accomms', [AccommodationSaleController::class, 'getSaleAccomms']);
     Route::post('create-accomm-sale-request', [AccommodationSaleController::class, 'createCallBackRequest']);
+
+    //Event Services
+    Route::get('get-rent-event-services', [EventServiceRentController::class, 'getEventServices']);
+    Route::post('create-event-rent-request', [EventServiceRentController::class, 'createRequest']);
+
+
+
 
     //
     Route::post('toggle-favorite', [FavoriteController::class, 'toggleFavorite']);
