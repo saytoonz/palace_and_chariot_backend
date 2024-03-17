@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('event_service_rents', function (Blueprint $table) {
             $table->id();
             $table->string('name')->require();
+            $table->string('country')->default('Ghana');
             $table->string('region')->nullable();
             $table->string('city')->nullable();
             $table->string('check_in')->nullable();

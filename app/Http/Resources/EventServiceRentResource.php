@@ -19,6 +19,7 @@ class EventServiceRentResource extends JsonResource
             'name' => $this->name,
             'region' => $this->region,
             'city' => $this->city,
+            'country'=>$this->country,
             'check_in' => $this->check_in,
             'check_out' => $this->check_out,
             "price" => (float)$this->price,
