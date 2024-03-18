@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccommodationSaleController;
+use App\Http\Controllers\ApartmentRentController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\ChatController;
@@ -61,6 +62,11 @@ Route::prefix('app')->group(function (){
     //Event Services
     Route::get('get-rent-event-services', [EventServiceRentController::class, 'getEventServices']);
     Route::post('create-event-rent-request', [EventServiceRentController::class, 'createRequest']);
+
+
+    //Rent Apartment Services
+    Route::get('get-rent-apartments', [ApartmentRentController::class, 'getApartmentServices']);
+    Route::post('create-apartment-rent-request', [ApartmentRentController::class, 'createRequest']);
 
 
 
