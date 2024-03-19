@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('icon');
             $table->string('name');
             $table->unsignedBigInteger('object_id');
-            $table->enum('object_type',['vehicle_rent', 'rent_event','rent_apartment', 'sale_vehicle','sale_accomm','room'])->nullable();
+            $table->enum('object_type',['vehicle_rent', 'rent_event','rent_apartment', 'rent_hotel', 'sale_vehicle','sale_accomm','room'])->nullable();
             $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
         });

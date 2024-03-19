@@ -7,6 +7,7 @@ use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\EventServiceRentController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HotelRentController;
 use App\Http\Controllers\InAppNotificationController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\TourismController;
@@ -67,6 +68,10 @@ Route::prefix('app')->group(function (){
     //Rent Apartment Services
     Route::get('get-rent-apartments', [ApartmentRentController::class, 'getApartmentServices']);
     Route::post('create-apartment-rent-request', [ApartmentRentController::class, 'createRequest']);
+
+     //Rent Hotel Services
+     Route::get('get-rent-hotels', [HotelRentController::class, 'getHotelsServices']);
+     Route::post('create-hotel-rent-request', [HotelRentController::class, 'createRequest']);
 
 
 

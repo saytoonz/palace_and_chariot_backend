@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('app_user_id');
             $table->unsignedBigInteger('object_id');
-            $table->enum('type',['rent_vehicle', 'rent_event','rent_apartment','sale_vehicle', 'travel', 'tour','sale_accomm'])->default('rent_vehicle');
+            $table->enum('type',['rent_vehicle', 'rent_event','rent_apartment', 'rent_hotel','sale_vehicle', 'travel', 'tour','sale_accomm'])->default('rent_vehicle');
             $table->timestamps();
         });
     }
