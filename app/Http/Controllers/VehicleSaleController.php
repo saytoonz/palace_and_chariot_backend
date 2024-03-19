@@ -13,9 +13,11 @@ class VehicleSaleController extends Controller
     use ApiResponseTrait;
 
 
-    function getSaleVehicles()
+    function getSaleVehicles(Request $request)
     {
-        $data =  VehicleSale::with(['make'])->paginate();
+        $data =  VehicleSale::with(['make']) ->where(function ($query) use ($request) {
+            if (isset($request->make_id))   $query->where('vehicle_make_id', $request->make_id);
+        })->paginate();
         return $this->ApiResponse(true, 'vehicle_sale', null, $data, true);
     }
 
