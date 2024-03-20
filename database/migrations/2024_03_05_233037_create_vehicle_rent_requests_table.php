@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->unsignedBigInteger('app_user_id')->default(0);
             $table->string('pickup_location');
-            $table->timestamp('pickup_date_time');
-            $table->timestamp('dropoff_date_time');
+            $table->timestamp('pickup_date_time')->nullable();;
+            $table->timestamp('dropoff_date_time')->nullable();;
 
             $table->string('name');
             $table->string('address');

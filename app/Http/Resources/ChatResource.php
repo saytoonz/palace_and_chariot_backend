@@ -16,10 +16,10 @@ class ChatResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'from' => $this->from,
-            "object_id" => $this->object_id,
+            'from' =>(int) $this->from,
+            "object_id" => (int)$this->object_id,
             "object_type" => $this->object_type,
-            'owner' => $this->owner,
+            'owner' => (int)$this->owner,
             "message" => $this->message,
             "type" => $this->type,
             "unread" => (bool)$this->unread,

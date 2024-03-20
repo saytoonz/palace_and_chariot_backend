@@ -17,7 +17,7 @@ class ImageResource extends JsonResource
         return[
             'id' => $this->id,
             'image' =>env('APP_URL').$this->image,
-            'object_id' => $this->object_id,
+            'object_id' =>(int) $this->object_id,
             'object_type' => $this->object_type,
             'status' => $this->status,
         ];

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('body');
             $table->string('object_id');
             $table->string('image');
-            $table->enum('object_type',['security','rent_vehicle', 'rent_event','rent_apartment', 'sale_vehicle', 'travel', 'tour','sale_accomm'])->default('sale_vehicle');
+            $table->enum('object_type',['security','rent_vehicle', 'rent_event','rent_apartment', 'rent_hotel', 'sale_vehicle', 'travel', 'tour','sale_accomm'])->default('sale_vehicle');
 
             $table->text('app_users');
 

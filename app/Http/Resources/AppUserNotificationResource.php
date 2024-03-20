@@ -17,13 +17,13 @@ class AppUserNotificationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "app_user_id" => $this->app_user_id,
-            "chat_box" => $this->chat_box == 1,
-            "travel_ideas" => $this->travel_ideas == 1,
-            "rentals" => $this->rentals == 1,
-            "security" => $this->security == 1,
-            "sales" => $this->sales == 1,
-            "upcoming_deals" => $this->upcoming_deals == 1,
+            "app_user_id" => (int)$this->app_user_id,
+            "chat_box" => (bool)$this->chat_box,
+            "travel_ideas" => (bool)$this->travel_ideas,
+            "rentals" => (bool)$this->rentals,
+            "security" => (bool)$this->security,
+            "sales" => (bool)$this->sales,
+            "upcoming_deals" => (bool)$this->upcoming_deals,
         ];
     }
 }

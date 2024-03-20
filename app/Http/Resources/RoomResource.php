@@ -20,7 +20,7 @@ class RoomResource extends JsonResource
             'name' => $this->name,
             'image' => env('APP_URL') . $this->image,
             'price' => (double) $this->price,
-            'object_id' => $this->object_id,
+            'object_id' => (int) $this->object_id,
             'object_type' => $this->object_type,
             'status' => $this->status,
             "keys" => VehicleKeyResource::collection($this->keys()),

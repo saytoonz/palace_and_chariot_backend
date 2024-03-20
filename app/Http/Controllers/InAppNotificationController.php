@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AccommodationSaleResource;
+use App\Http\Resources\ApartmentRentResource;
+use App\Http\Resources\HotelRentResource;
 use App\Http\Resources\InAppNotificationResource;
 use App\Http\Resources\SecurityResource;
 use App\Http\Resources\TourismResource;
@@ -10,6 +12,8 @@ use App\Http\Resources\TravelLocationResource;
 use App\Http\Resources\VehicleRentResource;
 use App\Http\Resources\VehicleSaleResource;
 use App\Models\AccommodationSale;
+use App\Models\ApartmentRent;
+use App\Models\HotelRent;
 use App\Models\InAppNotification;
 use App\Models\Security;
 use App\Models\Tourism;
@@ -53,6 +57,16 @@ class InAppNotificationController extends Controller
             $data = VehicleRent::find($objectId);
             if ($data) {
                 $returnData = new VehicleRentResource($data);
+            }
+        }  else if ($objectType == 'rent_hotel') {
+            $data = HotelRent::find($objectId);
+            if ($data) {
+                $returnData = new HotelRentResource($data);
+            }
+        }  else if ($objectType == 'rent_apartment') {
+            $data = ApartmentRent::find($objectId);
+            if ($data) {
+                $returnData = new ApartmentRentResource($data);
             }
         } else if ($objectType == 'sale_vehicle') {
             $data = VehicleSale::find($objectId);
