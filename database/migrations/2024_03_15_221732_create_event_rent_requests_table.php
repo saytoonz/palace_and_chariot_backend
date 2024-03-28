@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('phone')->nullable();
 
             $table->unsignedBigInteger('rent_event_id')->nullable();
+            $table->string('check_in')->nullable();
+            $table->string('check_out')->nullable();
+            $table->integer('capacity')->default(100);
             $table->string('event_type')->default('other');
             $table->string('other_interests')->nullable();
 
