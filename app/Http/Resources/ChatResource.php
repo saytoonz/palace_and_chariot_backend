@@ -24,6 +24,7 @@ class ChatResource extends JsonResource
             "type" => $this->type,
             "unread" => (bool)$this->unread,
             "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
             'status' => $this->status,
             "object" => $this->object_type == 'sale_vehicle' ? new VehicleSaleResource($this->saleVehicle) : new AccommodationSaleResource($this->saleAccomm),
         ];

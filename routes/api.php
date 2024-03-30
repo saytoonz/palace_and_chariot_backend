@@ -10,6 +10,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HotelRentController;
 use App\Http\Controllers\InAppNotificationController;
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\SharedController;
 use App\Http\Controllers\TourismController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\VehicleMakeController;
@@ -78,6 +79,7 @@ Route::prefix('app')->group(function (){
 
     //
     Route::post('toggle-favorite', [FavoriteController::class, 'toggleFavorite']);
+    Route::get('get-user-favorites/{appUserId}', [FavoriteController::class, 'getUserFavorites']);
 
     //Security
     Route::get('get-all-securities', [SecurityController::class, 'getAllSecurities']);
@@ -102,7 +104,10 @@ Route::prefix('app')->group(function (){
 
     //In app notificacion
     Route::get('in-app-notifications/{app_user_id}', [InAppNotificationController::class, 'getUserInAppNorifications']);
-    Route::get('get-notification-object/{object_id}/{object_type}', [InAppNotificationController::class, 'getNotificationObject']);
+
+
+    //Shared
+    Route::get('get-object/{object_id}/{object_type}', [SharedController::class, 'getObject']);
 
 });
 
