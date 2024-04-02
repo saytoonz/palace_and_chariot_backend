@@ -16,6 +16,7 @@ class FavoriteResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            "app_user_id" => (int)$this->app_user_id,
             "object_id" => (int)$this->object_id,
             "type" => $this->type,
             "created_at" => $this->created_at,
