@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\AccommodationSaleResource;
 use App\Http\Resources\ApartmentRentResource;
 use App\Http\Resources\EventServiceRentResource;
+use App\Http\Resources\FavoriteResource;
 use App\Http\Resources\HotelRentResource;
 use App\Http\Resources\SecurityResource;
 use App\Http\Resources\TourismResource;
@@ -89,7 +90,7 @@ class FavoriteController extends Controller
         return response()->json([
             'error' => false,
             'msg' => "success",
-            'data' => $data,
+            'data' => FavoriteResource::collection($data),
         ]);
     }
 
