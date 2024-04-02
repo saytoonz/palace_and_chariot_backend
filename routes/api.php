@@ -95,7 +95,6 @@ Route::prefix('app')->group(function (){
     Route::post('create-tour-request', [TourismController::class, 'createTourRequest']);
 
 
-
     //Chat
     Route::post('send-chat-message', [ChatController::class, 'sendMessage']);
     Route::get('get-chat-list/{app_user_id}', [ChatController::class, 'getChatList']);
@@ -106,7 +105,11 @@ Route::prefix('app')->group(function (){
     Route::get('in-app-notifications/{app_user_id}', [InAppNotificationController::class, 'getUserInAppNorifications']);
 
 
-    //Shared
+    //SHARED CONTROLLER
+    //Requests
+    Route::get('ongoing-requests/{app_user_id}', [SharedController::class,'ongoingRequests']);
+    Route::get('completed-requests/{app_user_id}', [SharedController::class,'completedRequests']);
+    //Object
     Route::get('get-object/{object_id}/{object_type}', [SharedController::class, 'getObject']);
 
 });

@@ -12,14 +12,24 @@ use App\Http\Resources\TravelLocationResource;
 use App\Http\Resources\VehicleRentResource;
 use App\Http\Resources\VehicleSaleResource;
 use App\Models\AccommodationSale;
+use App\Models\AccommodationSaleRequest;
 use App\Models\ApartmentRent;
+use App\Models\ApartmentRequest;
+use App\Models\EventRentRequest;
 use App\Models\EventServiceRent;
 use App\Models\HotelRent;
+use App\Models\HotelRequest;
 use App\Models\Security;
+use App\Models\SecurityRequest;
 use App\Models\Tourism;
+use App\Models\TourismRequest;
 use App\Models\TravelLocations;
+use App\Models\TravelRequest;
 use App\Models\VehicleRent;
+use App\Models\VehicleRentRequest;
 use App\Models\VehicleSale;
+use App\Models\VehicleSaleRequest;
+use Illuminate\Support\Facades\DB;
 
 class SharedController extends Controller
 {
@@ -79,6 +89,60 @@ class SharedController extends Controller
             'error' => false,
             'msg' => "success",
             'data' => $returnData,
+        ]);
+    }
+
+
+    function ongoingRequests($appUserId) {
+
+        $apartments = ApartmentRequest::where('app_user_id', $appUserId)->where('status', 'pending')->orwhere('status', 'active')->get();
+        $hotel = HotelRequest::where('app_user_id', $appUserId)->where('status', 'pending')->orwhere('status', 'active')->get();
+        $events = EventRentRequest::where('app_user_id', $appUserId)->where('status', 'pending')->orwhere('status', 'active')->get();
+        $security = SecurityRequest::where('app_user_id', $appUserId)->where('status', 'pending')->orwhere('status', 'active')->get();
+        $tourism = TourismRequest::where('app_user_id', $appUserId)->where('status', 'pending')->orwhere('status', 'active')->get();
+        $travel = TravelRequest::with(['departure','droppOff'])->where('app_user_id', $appUserId)->where('status', 'pending')->orwhere('status', 'active')->get();
+        $rentVehicle = VehicleRentRequest::where('app_user_id', $appUserId)->where('status', 'pending')->orwhere('status', 'active')->get();
+
+        $data = [
+            ...$apartments,
+            ...$hotel,
+            ...$events,
+            ...$security,
+            ...$tourism,
+            ...$travel,
+            ...$rentVehicle,
+        ];
+
+        return  response()->json([
+            'error' => false,
+            'msg' => "success",
+            'data' => $data,
+        ]);
+    }
+
+    function completedRequests($appUserId) {
+        $apartments = ApartmentRequest::where('app_user_id', $appUserId)->where('status', 'completed')->orwhere('status', 'cancelled')->get();
+        $hotel = HotelRequest::where('app_user_id', $appUserId)->where('status', 'completed')->orwhere('status', 'cancelled')->get();
+        $events = EventRentRequest::where('app_user_id', $appUserId)->where('status', 'completed')->orwhere('status', 'cancelled')->get();
+        $security = SecurityRequest::where('app_user_id', $appUserId)->where('status', 'completed')->orwhere('status', 'cancelled')->get();
+        $tourism = TourismRequest::where('app_user_id', $appUserId)->where('status', 'completed')->orwhere('status', 'cancelled')->get();
+        $travel = TravelRequest::with(['departure','droppOff'])->where('app_user_id', $appUserId)->where('status', 'cancelled')->orwhere('status', 'cancelled')->get();
+        $rentVehicle = VehicleRentRequest::where('app_user_id', $appUserId)->where('status', 'completed')->orwhere('status', 'cancelled')->get();
+
+        $data = [
+            ...$apartments,
+            ...$hotel,
+            ...$events,
+            ...$security,
+            ...$tourism,
+            ...$travel,
+            ...$rentVehicle,
+        ];
+
+        return  response()->json([
+            'error' => false,
+            'msg' => "success",
+            'data' => $data,
         ]);
     }
 }
