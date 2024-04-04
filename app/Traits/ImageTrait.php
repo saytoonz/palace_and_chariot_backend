@@ -24,12 +24,12 @@ trait ImageTrait
         if ($validator->fails()) return false;
 
         $imageImage = $title . '.png';
-        $request->file($field_name)->storeAs('public/user_data/avatar', $imageImage);
-        // Image::make(storage_path().'/app/public/user_data/avatar/'.$imageImage)
+        $request->file($field_name)->storeAs('public/', $imageImage);
+        // Image::make(storage_path().'/app/public//avatar/'.$imageImage)
         // ->encode('png')->fit(100, 100, function ($constraint) {
         //     $constraint->upsize();
         // })->save();
 
-        return  "/storage/user_data/avatar/" . $imageImage;
+        return  '/storage/' . $imageImage;
     }
 }

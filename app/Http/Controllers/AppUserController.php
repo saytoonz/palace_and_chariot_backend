@@ -35,7 +35,7 @@ public function create(Request $request)
     $appUser = AppUser::create($request->all());
     if ($appUser) {
         if ($request->image) {
-            $avatar = $this->uploadAvatar($request, 'image', 'avatar_'.$request->fuid);
+            $avatar = $this->uploadAvatar($request, 'image', 'avatar_'.$appUser->fuid.date('Y-m-d H:i:s'));
             if ($avatar) {
                 $appUser->image = $avatar;
                 $appUser->save();
@@ -106,10 +106,14 @@ public function update(Request $request)
             $usrArray["language"] = $request->language;
         }
 
+        if ($request->gender) {
+            $usrArray["gender"] = $request->gender;
+        }
+
 
 
         if ($request->image) {
-            $avatar = $this->uploadAvatar($request, 'image', 'avatar_'.$appUser->fuid);
+            $avatar = $this->uploadAvatar($request, 'image', 'avatar_'.$appUser->fuid.date('Y-m-d H:i:s'));
             if ($avatar) {
                 $usrArray["image"] = $avatar;
             }
