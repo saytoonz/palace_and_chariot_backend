@@ -5,6 +5,7 @@ use App\Http\Controllers\ApartmentRentController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EventServiceRentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HotelRentController;
@@ -114,3 +115,15 @@ Route::prefix('app')->group(function (){
 
 });
 
+
+
+
+Route::prefix('dashboard')->group(function (){
+    Route::post('create-user', [DashboardUserController::class, 'create']);
+    // Route::post('update-user', [AppUserController::class, 'update']);
+    Route::post('check-and-login-user', [DashboardUserController::class, 'checkAndLogin']);
+    Route::post('forgot-password', [DashboardUserController::class, 'forgotPassword']);
+    Route::post('reset-password', [DashboardUserController::class, 'updatePassword']);
+    // Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
+
+});
