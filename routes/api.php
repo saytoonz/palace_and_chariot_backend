@@ -5,6 +5,7 @@ use App\Http\Controllers\ApartmentRentController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\EventServiceRentController;
 use App\Http\Controllers\FavoriteController;
@@ -125,6 +126,10 @@ Route::prefix('dashboard')->group(function (){
     Route::post('forgot-password', [DashboardUserController::class, 'forgotPassword']);
     Route::post('reset-password', [DashboardUserController::class, 'resetPassword']);
     Route::post('update-password', [DashboardUserController::class, 'updatePassword']);
-    // Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
+
+    Route::get('get-statistics', [DashboardController::class, 'getStatistics']);
+    Route::get('get-active-request', [DashboardController::class, 'getActiveRequest']);
+    Route::get('get-pending-request', [DashboardController::class, 'getPendingRequest']);
+    Route::get('get-closed-request', [DashboardController::class, 'getClosedRequest']);
 
 });
