@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Models\DashboardUser;
 use Illuminate\Http\Request;
 use App\Traits\ImageTrait;
 use Illuminate\Support\Facades\Validator;
+
+use App\Http\Controllers\Controller;
 
 class DashboardUserController extends Controller
 {

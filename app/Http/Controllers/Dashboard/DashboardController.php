@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\Dashboard;
+
 
 use App\Http\Resources\AccommodationSaleResource;
 use App\Http\Resources\ApartmentRentResource;
@@ -35,7 +37,7 @@ use App\Models\VehicleSaleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPSTORM_META\map;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {

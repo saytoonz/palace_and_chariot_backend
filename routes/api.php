@@ -5,8 +5,9 @@ use App\Http\Controllers\ApartmentRentController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DashboardUserController;
+use App\Http\Controllers\Dashboard\CustomerController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\DashboardUserController;
 use App\Http\Controllers\EventServiceRentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HotelRentController;
@@ -132,5 +133,8 @@ Route::prefix('dashboard')->group(function (){
     Route::get('get-pending-request', [DashboardController::class, 'getPendingRequest']);
     Route::get('get-closed-request', [DashboardController::class, 'getClosedRequest']);
     Route::post('update-request-status', [DashboardController::class, 'updateRequestStatus']);
+
+    Route::get('get-customers', [CustomerController::class, 'getCustomers']);
+    Route::get('search-customers/{query}', [CustomerController::class, 'searchCustomer']);
 
 });
