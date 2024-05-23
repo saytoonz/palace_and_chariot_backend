@@ -131,5 +131,6 @@ Route::prefix('dashboard')->group(function (){
     Route::get('get-active-request', [DashboardController::class, 'getActiveRequest']);
     Route::get('get-pending-request', [DashboardController::class, 'getPendingRequest']);
     Route::get('get-closed-request', [DashboardController::class, 'getClosedRequest']);
+    Route::post('update-request-status', [DashboardController::class, 'updateRequestStatus']);
 
 });
