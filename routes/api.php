@@ -120,10 +120,11 @@ Route::prefix('app')->group(function (){
 
 Route::prefix('dashboard')->group(function (){
     Route::post('create-user', [DashboardUserController::class, 'create']);
-    // Route::post('update-user', [AppUserController::class, 'update']);
+    Route::post('update-user', [DashboardUserController::class, 'update']);
     Route::post('check-and-login-user', [DashboardUserController::class, 'checkAndLogin']);
     Route::post('forgot-password', [DashboardUserController::class, 'forgotPassword']);
-    Route::post('reset-password', [DashboardUserController::class, 'updatePassword']);
+    Route::post('reset-password', [DashboardUserController::class, 'resetPassword']);
+    Route::post('update-password', [DashboardUserController::class, 'updatePassword']);
     // Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
 
 });
