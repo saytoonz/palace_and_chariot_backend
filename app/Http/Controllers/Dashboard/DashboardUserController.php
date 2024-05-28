@@ -482,7 +482,7 @@ class DashboardUserController extends Controller
         } else {
             return response()->json([
                 "error" => true,
-                'msg' => 'You cannot update yourself.'
+                'msg' => 'Unknown user.'
             ]);
         }
     }
@@ -500,7 +500,6 @@ class DashboardUserController extends Controller
                 'msg' => "Invalid user or limited access"
             ]);
         }
-
 
         $validator = Validator::make(
             $request->all(),
@@ -532,7 +531,7 @@ class DashboardUserController extends Controller
         } else {
             return response()->json([
                 "error" => true,
-                'msg' => 'You cannot update yourself.'
+                'msg' => 'Unknown user.'
             ]);
         }
     }
