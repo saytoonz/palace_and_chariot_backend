@@ -2,6 +2,7 @@
 
 namespace  App\Traits;
 
+use App\Http\Resources\AccessLogResource;
 use App\Http\Resources\AccommodationSaleResource;
 use App\Http\Resources\AppUserResources;
 use App\Http\Resources\ChatResource;
@@ -23,6 +24,7 @@ trait ApiResponseTrait
             'accomm_sale'=>AccommodationSaleResource::collection($paginateData),
             'chats'=>ChatResource::collection($paginateData),
             'in_app_notification' => InAppNotificationResource::collection($paginateData),
+            'access_log' => AccessLogResource::collection($paginateData),
         };
 
         $headers = [];

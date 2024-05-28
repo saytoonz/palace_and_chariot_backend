@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\AccessLogController;
 use App\Http\Controllers\AccommodationSaleController;
 use App\Http\Controllers\ApartmentRentController;
 use App\Http\Controllers\AppUserController;
@@ -137,4 +138,5 @@ Route::prefix('dashboard')->group(function (){
     Route::get('get-customers', [CustomerController::class, 'getCustomers']);
     Route::get('search-customers/{query}', [CustomerController::class, 'searchCustomer']);
 
+    Route::get('get-access-logs', [AccessLogController::class, 'getAccessLogs']);
 });

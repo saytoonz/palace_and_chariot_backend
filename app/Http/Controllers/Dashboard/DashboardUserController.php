@@ -8,10 +8,13 @@ use App\Traits\ImageTrait;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
+use App\Models\AccessLog;
+use App\Traits\CountryTrait;
 
 class DashboardUserController extends Controller
 {
     use ImageTrait;
+    use CountryTrait;
 
     public function create(Request $request)
     {
@@ -65,6 +68,13 @@ class DashboardUserController extends Controller
             ->where('status', 'active')->where('is_deleted', false)
             ->first();
 
+
+        $country = $this->getCountry($request);
+        AccessLog::create([
+            'dashboard_user_id' => $dashUser->id,
+            'country' => $country,
+            'device' => $request->header('User-Agent'),
+        ]);
 
         $dashUser->last_login = date('Y-m-d H:i:s');
         $dashUser->save();
