@@ -6,6 +6,7 @@ use App\Http\Resources\AccessLogResource;
 use App\Http\Resources\AccommodationSaleResource;
 use App\Http\Resources\AppUserResources;
 use App\Http\Resources\ChatResource;
+use App\Http\Resources\DashboardUserResources;
 use App\Http\Resources\InAppNotificationResource;
 use App\Http\Resources\SecurityResource;
 use App\Http\Resources\VehicleRentResource;
@@ -24,6 +25,7 @@ trait ApiResponseTrait
             'accomm_sale'=>AccommodationSaleResource::collection($paginateData),
             'chats'=>ChatResource::collection($paginateData),
             'in_app_notification' => InAppNotificationResource::collection($paginateData),
+            'dashboar_user' => DashboardUserResources::collection($paginateData),
             'access_log' => AccessLogResource::collection($paginateData),
         };
 

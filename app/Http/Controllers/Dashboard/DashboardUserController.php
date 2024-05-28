@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
 use App\Models\AccessLog;
+use App\Traits\ApiResponseTrait;
 use App\Traits\CountryTrait;
 
 class DashboardUserController extends Controller
 {
     use ImageTrait;
     use CountryTrait;
+    use ApiResponseTrait;
 
     public function create(Request $request)
     {
@@ -234,7 +236,7 @@ class DashboardUserController extends Controller
 
 
             if ($request->image) {
-                $avatar = $this->uploadAvatar($request, 'image', 'avatar_' . $dashUser->fuid . date('Y-m-d H:i:s'));
+                $avatar = $this->uploadAvatar($request, 'image', 'avatar_' . $dashUser->id . date('Y-m-d H:i:s'));
                 if ($avatar) {
                     $usrArray["image_url"] = $avatar;
                 }
@@ -292,6 +294,245 @@ class DashboardUserController extends Controller
             return response()->json([
                 "error" => true,
                 'msg' => "User credentials do not match",
+            ]);
+        }
+    }
+
+    function adminGetActiveUsers($adminId)
+    {
+        $dashUsers = DashboardUser::where('id', $adminId)
+            ->where('access', 'admin')
+            ->where('status', 'active')
+            ->where('is_deleted', 0)->first();
+
+        if (!$dashUsers) {
+            return response()->json([
+                "error" => true,
+                'msg' => "Invalid user or limited access"
+            ]);
+        }
+
+        $dashUsers = DashboardUser::where('id', '!=', $adminId)->where('status', 'active')->where('is_deleted', 0)->paginate();
+        return $this->ApiResponse(true, 'dashboar_user', null, $dashUsers);
+    }
+
+
+
+    function adminUpdateUser(Request $request, $adminId)
+    {
+        $loggedInUser = DashboardUser::where('id', $adminId)
+            ->where('access', 'admin')
+            ->where('status', 'active')
+            ->where('is_deleted', 0)->first();
+
+        if (!$loggedInUser) {
+            return response()->json([
+                "error" => true,
+                'msg' => "Invalid user or limited access"
+            ]);
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'dashboard_user_id' => ['required',  'int'],
+            ],
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        //Create a new app user
+        $dashUser = DashboardUser::where('id', $request->dashboard_user_id)->where('is_deleted', false)->first();
+
+        if ($dashUser) {
+            //Updates user
+            $usrArray = [];
+            if ($request->first_name) {
+                $usrArray["first_name"] = $request->first_name;
+            }
+
+            if ($request->middle_name) {
+                $usrArray["middle_name"] = $request->middle_name;
+            }
+
+
+            if ($request->last_name) {
+                $usrArray["last_name"] = $request->last_name;
+            }
+
+            if ($request->phone) {
+                $usrArray["phone"] = $request->phone;
+            }
+
+            if ($request->date_of_birth) {
+                $usrArray["date_of_birth"] = $request->date_of_birth;
+            }
+            if ($request->access) {
+                $usrArray["access"] = $request->access;
+            }
+
+            if ($request->status) {
+                $usrArray["status"] = $request->status;
+            }
+            if ($request->email) {
+                $usrArray["email"] = $request->email;
+            }
+            if ($request->gender) {
+                $usrArray["gender"] = $request->gender;
+            }
+
+            if ($request->employee_id) {
+                $usrArray["employee_id"] = $request->employee_id;
+            }
+
+
+            if ($request->image) {
+                $avatar = $this->uploadAvatar($request, 'image', 'avatar_' . $dashUser->id . date('Y-m-d H:i:s'));
+                if ($avatar) {
+                    $usrArray["image_url"] = $avatar;
+                }
+            }
+
+            $dashUser->update($usrArray);
+
+            return response()->json([
+                'error' => false,
+                'msg' => "success",
+                'data' => $dashUser,
+            ]);
+        } else {
+            return response()->json([
+                'error' => true,
+                'msg' => "No user found",
+            ]);
+        }
+    }
+
+
+
+
+    function adminGetRequestedUsers($adminId)
+    {
+        $dashUsers = DashboardUser::where('id', $adminId)
+            ->where('access', 'admin')
+            ->where('status', 'active')
+            ->where('is_deleted', 0)->first();
+
+        if (!$dashUsers) {
+            return response()->json([
+                "error" => true,
+                'msg' => "Invalid user or limited access"
+            ]);
+        }
+
+        $dashUsers = DashboardUser::where('id', '!=', $adminId)->where('status', 'pending')->where('is_deleted', 0)->paginate();
+        return $this->ApiResponse(true, 'dashboar_user', null, $dashUsers);
+    }
+
+
+
+
+    function adminAcceptUser(Request $request, $adminId)
+    {
+        $dashUsers = DashboardUser::where('id', $adminId)
+            ->where('access', 'admin')
+            ->where('status', 'active')
+            ->where('is_deleted', 0)->first();
+
+        if (!$dashUsers) {
+            return response()->json([
+                "error" => true,
+                'msg' => "Invalid user or limited access"
+            ]);
+        }
+
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'dashboard_user_id' => ['required',  'int'],
+            ],
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        //Create a new app user
+        $dashUser = DashboardUser::where('id', '!=', $adminId)->where('id', $request->dashboard_user_id)->where('is_deleted', false)->first();
+        if ($dashUser) {
+            $dashUser->update([
+                'status' => 'active',
+            ]);
+
+            return response()->json([
+                "error" => false,
+                'msg' => 'success',
+                'data' => $dashUser,
+            ]);
+            return $dashUser;
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => 'You cannot update yourself.'
+            ]);
+        }
+    }
+
+    function adminRejectUser(Request $request, $adminId)
+    {
+        $dashUsers = DashboardUser::where('id', $adminId)
+            ->where('access', 'admin')
+            ->where('status', 'active')
+            ->where('is_deleted', 0)->first();
+
+        if (!$dashUsers) {
+            return response()->json([
+                "error" => true,
+                'msg' => "Invalid user or limited access"
+            ]);
+        }
+
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'dashboard_user_id' => ['required',  'int'],
+            ],
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $dashUser = DashboardUser::where('id', '!=', $adminId)
+            ->where('id', $request->dashboard_user_id)
+            ->where('is_deleted', false)->first();
+        if ($dashUser) {
+            $dashUser->update([
+                'status' => 'inactive',
+                'is_deleted' => true,
+            ]);
+            return response()->json([
+                "error" => false,
+                'msg' => 'success',
+                'data' => $dashUser,
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => 'You cannot update yourself.'
             ]);
         }
     }

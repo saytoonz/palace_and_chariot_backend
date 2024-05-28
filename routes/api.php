@@ -139,4 +139,11 @@ Route::prefix('dashboard')->group(function (){
     Route::get('search-customers/{query}', [CustomerController::class, 'searchCustomer']);
 
     Route::get('get-access-logs', [AccessLogController::class, 'getAccessLogs']);
+
+    Route::get('admin-get-active-users/{admin_id}', [DashboardUserController::class, 'adminGetActiveUsers']);
+    Route::post('admin-update-user/{admin_id}', [DashboardUserController::class, 'adminUpdateUser']);
+    Route::get('admin-get-requested-users/{admin_id}', [DashboardUserController::class, 'adminGetRequestedUsers']);
+    Route::post('admin-accept-user/{admin_id}', [DashboardUserController::class, 'adminAcceptUser']);
+    Route::post('admin-reject-user/{admin_id}', [DashboardUserController::class, 'adminRejectUser']);
+
 });

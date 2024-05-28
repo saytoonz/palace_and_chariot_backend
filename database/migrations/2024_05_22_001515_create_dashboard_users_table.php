@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone')->nullable();
             $table->string('date_of_birth')->nullable();
+            $table->string('employee_id')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
+
             $table->string('last_login')->nullable();
             $table->string('image_url')->nullable();
             $table->enum('access', ['standard', 'admin'])->default('standard');

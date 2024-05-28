@@ -26,6 +26,8 @@ class DashboardUserResources extends JsonResource
             "image_url" => $this->image_url  ?env('APP_URL').$this->image_url : $this->image_url,
             "access" => $this->access,
             "status" => $this->status,
+            "gender" => $this->gender,
+            "employee_id" => $this->employee_id,
             "request_confirmation_notifiction"=> $this->request_confirmation_notifiction == 1,
             "request_change_notifiction"=> $this->request_change_notifiction == 1,
             "email_notifiction"=> $this->email_notifiction == 1,
