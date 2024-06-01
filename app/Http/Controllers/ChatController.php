@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ChatResource;
-use App\Http\Resources\ChatMessageResource;
 use App\Models\ChatList;
 use App\Models\ChatMessage;
 use App\Traits\ApiResponseTrait;
