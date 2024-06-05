@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('chat_lists', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('from');
+            $table->unsignedBigInteger('from')->nullable();
             $table->unsignedBigInteger('to')->nullable();
             $table->unsignedBigInteger('owner');
             $table->string('message');
             $table->string('type')->default('text');
+            $table->unsignedBigInteger('admin')->nullable();
             $table->boolean('unread')->default(true);
 
             $table->unsignedBigInteger('object_id');

@@ -23,6 +23,7 @@ class DashboardChatResource extends JsonResource
             'owner' => (int)$this->owner,
             "message" => $this->message,
             "type" => $this->type,
+            'admin' => $this->admin,
             "unread" => (bool)$this->unread,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,

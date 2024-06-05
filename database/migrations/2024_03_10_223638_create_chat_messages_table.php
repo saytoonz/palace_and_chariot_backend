@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('from');
+            $table->unsignedBigInteger('from')->nullable();
             $table->unsignedBigInteger('to')->nullable();
             $table->string('message');
             $table->string('type')->default('text');
+            $table->unsignedBigInteger('admin')->nullable();
             $table->boolean('unread')->default(true);
+
 
             $table->unsignedBigInteger('object_id');
             $table->enum('object_type',['sale_vehicle', 'sale_accomm'])->default('sale_vehicle');

@@ -38,14 +38,13 @@ class ChatController extends Controller
 
             $chat =  ChatMessage::create($request->all());
             if ($chat) {
-                ChatList::updateOrCreate(
+                $chatListItem =  ChatList::updateOrCreate(
                     [
-                        'to' => request('object_id'),
                         'from' =>  request('from'),
                         'object_type' => request('object_type'),
+                        'object_id' => request('object_id'),
                     ],
                     [
-                        'to' =>  request('object_id'),
                         'owner' => request('from'),
                         'from' => request('from'),
                         'message' => request('message'),
@@ -55,23 +54,6 @@ class ChatController extends Controller
                     ],
                 );
 
-                $chatListItem =
-                 ChatList::updateOrCreate(
-                    [
-                        'to' =>  request('from'),
-                        'from' => request('object_id'),
-                        'object_type' => request('object_type'),
-                    ],
-                    [
-                        'owner' => request('object_id'),
-                        'to' =>  request('from'),
-                        'from' => request('object_id'),
-                        'message' => request('message'),
-                        'object_id' => request('object_id'),
-                        'object_type' => request('object_type'),
-
-                    ],
-                );
                 $chatListItem->unread = $chatListItem->unread + 1;
                 $chatListItem->save();
 

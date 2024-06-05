@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChatResource;
 use App\Http\Resources\DashboardChatResource;
 use App\Models\ChatList;
 use App\Models\ChatMessage;
 use App\Traits\ApiResponseTrait;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MessagesController extends Controller
 
@@ -40,84 +43,72 @@ use ApiResponseTrait;
     }
 
 
-    // public function sendMessage(Request $request)
-    // {
-    //     $validator = Validator::make(
-    //         $request->all(),
-    //         [
-    //             'from' => 'required',
-    //             'message' => 'required',
-    //             'object_id' => 'required',
-    //             'object_type' => 'required',
-    //         ]
-    //     );
+    public function sendMessage(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'to' => 'required',
+                'admin' => 'required',
+                'message' => 'required',
+                'object_id' => 'required',
+                'object_type' => 'required',
+            ]
+        );
 
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'error' => true,
-    //             'msg' => 'Missing params',
-    //         ]);
-    //     }
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => true,
+                'msg' => 'Missing params',
+            ]);
+        }
 
-    //     try {
+        try {
 
-    //         $chat =  ChatMessage::create($request->all());
-    //         if ($chat) {
-    //             ChatList::updateOrCreate(
-    //                 [
-    //                     'to' => request('object_id'),
-    //                     'from' =>  request('from'),
-    //                     'object_type' => request('object_type'),
-    //                 ],
-    //                 [
-    //                     'to' =>  request('object_id'),
-    //                     'owner' => request('from'),
-    //                     'from' => request('from'),
-    //                     'message' => request('message'),
-    //                     'object_id' => request('object_id'),
-    //                     'object_type' => request('object_type'),
+            $chat =  ChatMessage::create($request->all());
+            if ($chat) {
+                $chatListItem =
 
-    //                 ],
-    //             );
+                ChatList::updateOrCreate(
+                    [
+                        'owner' => request('to'),
+                        'object_type' => request('object_type'),
+                        'object_id' => request('object_id'),
+                    ],
+                    [
+                        'owner' => request('to'),
+                        'from' => request('to'),
+                        'admin' => request('from'),
+                        'message' => request('message'),
+                        'object_id' => request('object_id'),
+                        'object_type' => request('object_type'),
 
-    //             $chatListItem =
-    //              ChatList::updateOrCreate(
-    //                 [
-    //                     'to' =>  request('from'),
-    //                     'from' => request('object_id'),
-    //                     'object_type' => request('object_type'),
-    //                 ],
-    //                 [
-    //                     'owner' => request('object_id'),
-    //                     'to' =>  request('from'),
-    //                     'from' => request('object_id'),
-    //                     'message' => request('message'),
-    //                     'object_id' => request('object_id'),
-    //                     'object_type' => request('object_type'),
+                    ],
+                );
 
-    //                 ],
-    //             );
-    //             $chatListItem->unread = $chatListItem->unread + 1;
-    //             $chatListItem->save();
 
-    //             // $notifs = Notification::where("uid", request('to'))->get()->first();
-    //             // if ($notifs && $notifs->push_messages == 1) {
-    //             //     (new PushNotificationController)->SendPush(request('to'), "chat");
-    //             // }
-    //         }
-    //         return response()->json([
-    //             'error' => false,
-    //             'msg' => 'success',
-    //             'data' => new ChatResource($chat->refresh()),
-    //         ]);
-    //     } catch (Exception $e) {
-    //         return $e;
-    //         return response()->json([
-    //             'error' => true,
-    //             'msg' => 'An error occurred...',
-    //         ]);
-    //     }
-    // }
+
+                $chatListItem->unread = $chatListItem->unread + 1;
+                $chatListItem->save();
+
+                // $notifs = Notification::where("uid", request('to'))->get()->first();
+                // if ($notifs && $notifs->push_messages == 1) {
+                //     (new PushNotificationController)->SendPush(request('to'), "chat");
+                // }
+            }
+            return response()->json([
+                'error' => false,
+                'msg' => 'success',
+                'data' => new ChatResource($chat->refresh()),
+            ]);
+        } catch (Exception $e) {
+            return $e;
+            return response()->json([
+                'error' => true,
+                'msg' => 'An error occurred...',
+            ]);
+        }
+    }
 
 
     public function getChats($appUserId, $objectId, $objectType, $quantity)
