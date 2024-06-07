@@ -221,6 +221,10 @@ class DashboardUserController extends Controller
                 $usrArray["date_of_birth"] = $request->date_of_birth;
             }
 
+            if ($request->gender) {
+                $usrArray["gender"] = $request->gender;
+            }
+
 
             if ($request->request_confirmation_notifiction != null) {
                 $usrArray["request_confirmation_notifiction"] = $request->request_confirmation_notifiction == 'true' ? 1 : 0;
