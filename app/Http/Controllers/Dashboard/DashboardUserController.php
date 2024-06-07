@@ -71,18 +71,17 @@ class DashboardUserController extends Controller
             ->where('status', 'active')->where('is_deleted', false)
             ->first();
 
-
-        $country = $this->getCountry($request);
-        AccessLog::create([
-            'dashboard_user_id' => $dashUser->id,
-            'country' => $country,
-            'device' => $request->header('User-Agent'),
-        ]);
-
-        $dashUser->last_login = date('Y-m-d H:i:s');
-        $dashUser->save();
-
         if ($dashUser) {
+            $country = $this->getCountry($request);
+            AccessLog::create([
+                'dashboard_user_id' => $dashUser->id,
+                'country' => $country,
+                'device' => $request->header('User-Agent'),
+            ]);
+
+            $dashUser->last_login = date('Y-m-d H:i:s');
+            $dashUser->save();
+
             return response()->json([
                 "error" => false,
                 'msg' => "success",
