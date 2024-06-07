@@ -48,11 +48,11 @@ use ApiResponseTrait;
         $validator = Validator::make(
             $request->all(),
             [
-                'to' => 'required',
-                'admin' => 'required',
-                'message' => 'required',
-                'object_id' => 'required',
-                'object_type' => 'required',
+                'to' =>  ['required',  'int'],
+                'admin' =>  ['required',  'int'],
+                'message' =>  ['required',  'String'],
+                'object_id' =>  ['required',  'int'],
+                'object_type' =>  ['required',  'String'],
             ]
         );
 

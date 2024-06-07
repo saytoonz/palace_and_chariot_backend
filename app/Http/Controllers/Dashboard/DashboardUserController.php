@@ -8,6 +8,7 @@ use App\Traits\ImageTrait;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DashboardUserResources;
 use App\Models\AccessLog;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CountryTrait;
@@ -43,7 +44,7 @@ class DashboardUserController extends Controller
         return response()->json([
             'error' => false,
             'msg' => "success",
-            'data' => $dashUser->refresh(),
+            'data' => new DashboardUserResources($dashUser->refresh()),
         ]);
     }
 
@@ -85,7 +86,7 @@ class DashboardUserController extends Controller
             return response()->json([
                 "error" => false,
                 'msg' => "success",
-                'data' => $dashUser,
+                'data' => new DashboardUserResources($dashUser->refresh()),
             ]);
         } else {
             return response()->json([
@@ -247,7 +248,7 @@ class DashboardUserController extends Controller
             return response()->json([
                 'error' => false,
                 'msg' => "success",
-                'data' => $dashUser,
+                'data' => new DashboardUserResources($dashUser->refresh())
             ]);
         } else {
             return response()->json([

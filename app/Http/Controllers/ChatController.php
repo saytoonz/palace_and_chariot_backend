@@ -20,10 +20,10 @@ class ChatController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'from' => 'required',
-                'message' => 'required',
-                'object_id' => 'required',
-                'object_type' => 'required',
+                'from' =>  ['required', 'int'],
+                'message' =>  ['required', 'int'],
+                'object_id' => ['required', 'int'],
+                'object_type' =>  ['required', 'string'],
             ]
         );
 
