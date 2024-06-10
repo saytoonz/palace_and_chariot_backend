@@ -28,6 +28,7 @@ class DashboardUserResources extends JsonResource
             "status" => $this->status,
             "gender" => $this->gender,
             "employee_id" => $this->employee_id,
+            "date_employed" => $this->date_employed,
             "request_confirmation_notifiction"=> $this->request_confirmation_notifiction == 1,
             "request_change_notifiction"=> $this->request_change_notifiction == 1,
             "email_notifiction"=> $this->email_notifiction == 1,
