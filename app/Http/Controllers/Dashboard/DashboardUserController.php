@@ -394,6 +394,10 @@ class DashboardUserController extends Controller
                 $usrArray["employee_id"] = $request->employee_id;
             }
 
+            if ($request->is_deleted) {
+                $usrArray["is_deleted"] = $request->is_deleted;
+            }
+
 
             if ($request->image) {
                 $avatar = $this->uploadAvatar($request, 'image', 'avatar_' . $dashUser->id . date('Y-m-d H:i:s'));
@@ -407,7 +411,7 @@ class DashboardUserController extends Controller
             return response()->json([
                 'error' => false,
                 'msg' => "success",
-                'data' => $dashUser,
+                'data' => new DashboardUserResources($dashUser->refesh()),
             ]);
         } else {
             return response()->json([
