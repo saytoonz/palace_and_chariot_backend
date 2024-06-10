@@ -23,10 +23,12 @@ class AccommodationSaleResource extends JsonResource
             "available" => (bool) $this->available,
             "status" => $this->status,
             "ratings_value" => (float)$this->ratings_value,
+            "object_type" => "sale_accomm",
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
             "gallery" => ImageResource::collection($this->gallery()),
             "keys" => VehicleKeyResource::collection($this->keys()),
             "text_keys" => VehicleTextKeyResource::collection($this->textKeys()),
+
         ];
     }
 }

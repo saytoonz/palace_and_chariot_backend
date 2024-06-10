@@ -31,6 +31,7 @@ class EventServiceRentResource extends JsonResource
             "lat" => (double) $this->lat,
             "lng" => (double)$this->lng,
             'address' => $this->address,
+            "object_type" => "rent_event",
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
             'status' => $this->status,
             "created_at" => $this->created_at,

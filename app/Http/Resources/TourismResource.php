@@ -26,6 +26,7 @@ class TourismResource extends JsonResource
             "can_pick_up" => (bool)$this->can_pick_up,
             "can_provide_security" => (bool)$this->can_provide_security,
             'status' => $this->status,
+            "object_type" => "tour",
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
             "gallery" => ImageResource::collection($this->gallery()),
         ];

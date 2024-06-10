@@ -23,6 +23,7 @@ class VehicleSaleResource extends JsonResource
             "available" => (bool) $this->available,
             "status" => $this->status,
             "ratings_value" => (float)$this->ratings_value,
+            "object_type" => "sale_vehicle",
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
             "make" => $this->make,
             "gallery" => ImageResource::collection($this->gallery()),

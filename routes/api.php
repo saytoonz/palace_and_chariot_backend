@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\CustomerController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\DashboardUserController;
 use App\Http\Controllers\Dashboard\MessagesController;
+use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\EventServiceRentController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HotelRentController;
@@ -151,6 +152,9 @@ Route::prefix('dashboard')->group(function (){
     Route::get('get-chat-lists', [MessagesController::class, 'getChatList']);
     Route::get('get-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{quantity}',[ MessagesController::class, 'getChats']);
     Route::get('get-new-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{last_msg_id}',[ MessagesController::class, 'getNewChats']);
+
+    Route::get('get-products', [ProductController::class, 'getProducts']);
+
 
 });
 

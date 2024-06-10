@@ -20,6 +20,7 @@ class SecurityResource extends JsonResource
             'image' =>env('APP_URL').$this->image,
             'html_description' => $this->html_description,
             'status' => $this->status,
+            "object_type" => "security",
         ];
     }
 }

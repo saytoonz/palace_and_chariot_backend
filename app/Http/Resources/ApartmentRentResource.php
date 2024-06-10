@@ -31,6 +31,7 @@ class ApartmentRentResource extends JsonResource
             'address' => $this->address,
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
             'status' => $this->status,
+            "object_type" => "rent_apartment",
             "created_at" => $this->created_at,
             "gallery" => ImageResource::collection($this->gallery()),
             "keys" => VehicleKeyResource::collection($this->keys()),

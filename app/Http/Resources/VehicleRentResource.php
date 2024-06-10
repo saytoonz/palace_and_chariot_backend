@@ -26,6 +26,7 @@ class VehicleRentResource extends JsonResource
             "type" => $this->type,
             "status" => $this->status,
             "ratings_value" => (double)$this->ratings_value,
+            "object_type" => "rent_vehicle",
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
             "make" => $this->make,
             "gallery" => ImageResource::collection($this->gallery()),
