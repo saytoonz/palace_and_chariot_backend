@@ -415,7 +415,7 @@ class DashboardUserController extends Controller
             return response()->json([
                 'error' => false,
                 'msg' => "success",
-                'data' => new DashboardUserResources($dashUser->refesh()),
+                'data' => new DashboardUserResources($dashUser->refresh()),
             ]);
         } else {
             return response()->json([
