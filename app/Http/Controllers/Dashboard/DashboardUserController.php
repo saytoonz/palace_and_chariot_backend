@@ -376,6 +376,7 @@ class DashboardUserController extends Controller
             if ($request->date_of_birth) {
                 $usrArray["date_of_birth"] = $request->date_of_birth;
             }
+
             if ($request->access) {
                 $usrArray["access"] = $request->access;
             }
@@ -392,6 +393,9 @@ class DashboardUserController extends Controller
 
             if ($request->employee_id) {
                 $usrArray["employee_id"] = $request->employee_id;
+            }
+            if ($request->date_employed) {
+                $usrArray["date_employed"] = $request->date_employed;
             }
 
             if ($request->is_deleted) {
