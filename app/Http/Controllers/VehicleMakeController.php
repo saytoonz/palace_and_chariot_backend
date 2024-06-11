@@ -23,4 +23,13 @@ class VehicleMakeController extends Controller
             'data' => VehicleMakeResource::collection($data),
         ]);
     }
+
+    function getAllMakes() {
+        $data = VehicleMake::where('image', '!=', null)->where('status','active')->get();
+        return response()->json([
+            'error' => false,
+            'msg' => "success",
+            'data' => VehicleMakeResource::collection($data),
+        ]);
+    }
 }

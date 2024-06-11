@@ -20,6 +20,8 @@ return new class extends Migration
             $table->double('price')->default(0);
             $table->double('ratings_value')->default(5);
             $table->boolean('available')->default(true);
+            $table->double('discount')->default(0);
+            $table->int('quantity')->default(1);
             $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
             $table->timestamps();
         });

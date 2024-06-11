@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('region');
             $table->string('city');
             $table->double('price')->default(0);
+            $table->double('discount')->default(0);
             $table->double('ratings_value')->default(5);
             $table->boolean('available')->default(true);
             $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
