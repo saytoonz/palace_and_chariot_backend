@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 trait ImageTrait
 {
@@ -16,7 +17,7 @@ trait ImageTrait
         $validator = Validator::make(
             $request->all(),
             [
-                $field_name => ['file', 'image'],
+                $field_name => ['required', 'image',  'max:2048',],
             ],
         );
 
@@ -31,4 +32,6 @@ trait ImageTrait
 
         return  '/storage/' . $imageImage;
     }
+
+
 }

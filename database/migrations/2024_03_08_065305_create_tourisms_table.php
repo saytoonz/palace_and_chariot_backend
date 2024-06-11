@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('title');
             $table->longText('overview');
             $table->double('price')->default(0);
+            $table->double('discount')->default(0);
             $table->double('ratings_value')->default(0);
             $table->double('total_ratings')->default(0);
-            $table->string('available_time')->default('11 to 15 hours');
+            $table->string('available_time')->default('Always available');
             $table->boolean('free_cancellation')->default(true);
             $table->boolean('can_pick_up')->default(true);
             $table->boolean('can_provide_security')->default(true);

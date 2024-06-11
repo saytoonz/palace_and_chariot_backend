@@ -153,7 +153,10 @@ Route::prefix('dashboard')->group(function (){
     Route::get('get-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{quantity}',[ MessagesController::class, 'getChats']);
     Route::get('get-new-chat-messages/{appu_ser_id}/{object_id}/{object_type}/{last_msg_id}',[ MessagesController::class, 'getNewChats']);
 
+    Route::post('upload-product-image', [ProductController::class, 'uploadProductImge']);
     Route::get('get-products', [ProductController::class, 'getProducts']);
+    Route::post('create-tourism-product', [ProductController::class, 'createTourismProduct']);
+    Route::post('create-security-product', [ProductController::class, 'createSecurityProduct']);
 
 
 });
