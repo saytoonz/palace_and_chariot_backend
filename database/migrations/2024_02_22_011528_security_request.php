@@ -24,12 +24,9 @@ return new class extends Migration
 
             $table->unsignedBigInteger('security_client_type_id')->nullable();
 
-            $table->string('status')->default('pending');
+            $table->enum('status',['active', 'pending','close', 'deleted'])->default('pending');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
-
-            // $table->foreign('app_user_id')->references('id')->on('app_users')
-            // ->oncascade('delete');
         });
     }
 

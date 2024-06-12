@@ -37,7 +37,7 @@ return new class extends Migration
             $table->boolean('require_provide_accommodation')->default(false);
             $table->boolean('require_provide_rentals')->default(false);
 
-            $table->string('status')->default('pending');
+            $table->enum('status',['active', 'pending','close', 'deleted'])->default('pending');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });

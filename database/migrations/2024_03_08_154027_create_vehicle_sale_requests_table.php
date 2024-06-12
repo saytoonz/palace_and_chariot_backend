@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('country_code');
             $table->string('phone');
-            $table->enum('status',['active', 'inactive', 'deleted'])->default('active');
+            $table->enum('status',['active', 'pending','close', 'deleted'])->default('pending');
             $table->timestamps();
         });
     }

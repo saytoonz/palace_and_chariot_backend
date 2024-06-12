@@ -38,7 +38,7 @@ return new class extends Migration
             $table->string('driver_license')->nullable();
 
 
-            $table->string('status')->default('pending');
+            $table->enum('status',['active', 'pending','close', 'deleted'])->default('pending');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
