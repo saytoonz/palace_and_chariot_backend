@@ -159,6 +159,9 @@ Route::prefix('dashboard')->group(function (){
     Route::post('create-security-product', [ProductController::class, 'createSecurityProduct']);
     Route::post('create-sale-vehicle-product', [ProductController::class, 'createSaleVehicleProduct']);
     Route::post('create-sale-accommodation-product', [ProductController::class, 'createSaleAccommodationProduct']);
+    Route::post('create-rent-vehicle-product', [ProductController::class, 'createRentVehicleProduct']);
+
+
 
 
     Route::get('get-all-vehicle-makes', [VehicleMakeController::class, 'getAllMakes']);

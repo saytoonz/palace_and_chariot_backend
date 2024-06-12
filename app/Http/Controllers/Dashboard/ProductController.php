@@ -347,4 +347,64 @@ class ProductController extends Controller
             ]);;
         }
     }
+
+
+    function createRentVehicleProduct(Request $request)  {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'logged_in_user_id' => ['required', 'int'],
+                'type' => ['required', 'string', 'max:3'],
+                'name' => ['required', 'string'],
+                'vehicle_make_id' => ['required', 'int'],
+                'price' => ['required'],
+                'driver_fee' => ['required'],
+                'status' => ['required', 'string'],
+                'color' => ['required', 'string'],
+                'send_discount_notification' => ['required', 'bool'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $data  = VehicleRent::create([
+            'name' => $request->name,
+            'vehicle_make_id' => $request->vehicle_make_id,
+            'model' => $request->model,
+            'color' => $request->color,
+            'price' => $request->price,
+            'discount' => $request->discount,
+            'quantity' => $request->quantity,
+            'driver_fee' => $request->driver_fee,
+            'location' => $request->location,
+            'free_cancellation_after' => $request->free_cancellation_after,
+            'type' => $request->type,
+            'status' => $request->status,
+
+        ]);
+        $images = $this->saveImageList($request->images,  $data->id, 'vehicle_rent');
+        $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'vehicle_rent');
+
+        if ($data &&  $images) {
+            return response()->json([
+                "error" => false,
+                'msg' => new VehicleRentResource($data->refresh()),
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => "Error occurred while creating product.",
+            ]);;
+        }
+
+        return $request;
+    }
 }
