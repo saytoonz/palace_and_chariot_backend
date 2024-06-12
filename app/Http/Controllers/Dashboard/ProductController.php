@@ -16,6 +16,7 @@ use App\Models\ApartmentRent;
 use App\Models\EventServiceRent;
 use App\Models\HotelRent;
 use App\Models\Image;
+use App\Models\Rooms;
 use App\Models\Security;
 use App\Models\Tourism;
 use App\Models\VehicleKeys;
@@ -146,13 +147,41 @@ class ProductController extends Controller
         foreach ($imageKeys as $key => $data) {
             if (!is_null($data['data']) && $data['data'] !== '' && $data['data'] !== 0 && $data['data'] !== '0') {
                 VehicleKeys::create([
-                    'name' => trim($data['data'] .' '. $data['name']),
+                    'name' => trim($data['data'] . ' ' . $data['name']),
                     'icon' => $data['icon'],
                     'object_id' => $objectId,
                     'object_type' => $objectType,
 
                 ]);
             }
+        }
+    }
+
+
+    private function saveRooms($rooms, $objectId, $objectType)
+    {
+        foreach ($rooms as  $data) {
+             $room =    Rooms::create([
+                    'name' => $data['room_type'],
+                    'discount' => $data['discount'],
+                    'price' => $data['price'],
+                    'adults' => $data['adults'],
+                    'children' => $data['children'],
+                    'image' => $data['image'],
+                    'object_id' => $objectId,
+                    'object_type' => $objectType,
+                ]);
+
+                for ($i=0; $i < count($data['facilities']); $i++) {
+                    VehicleKeys::create([
+                        'name' => $data['facilities'][$i]['name'],
+                        'icon' => $data['facilities'][$i]['icon'],
+                        'object_id' => $room->id,
+                        'object_type' => 'room',
+
+                    ]);
+                }
+
         }
     }
 
@@ -349,7 +378,8 @@ class ProductController extends Controller
     }
 
 
-    function createRentVehicleProduct(Request $request)  {
+    function createRentVehicleProduct(Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             [
@@ -406,5 +436,116 @@ class ProductController extends Controller
         }
 
         return $request;
+    }
+
+
+    function createRentAccommodationProduct(Request $request)
+    {
+
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'logged_in_user_id' => ['required', 'int'],
+                'type' => ['required', 'string'],
+                'name' => ['required', 'string'],
+                'status' => ['required', 'string'],
+                'region' => ['required', 'string'],
+                'city' => ['required', 'string'],
+                'address' => ['required', 'string'],
+                'lat' => ['required'],
+                'lng' => ['required'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+                'rooms' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+
+
+        if ($request->type === 'hotel') {
+            $data  = HotelRent::create([
+                'name' => $request->name,
+                'region' => $request->region,
+                'city' => $request->city,
+                'price' =>  $request->rooms[0]['price'] ?? 0,
+                'status' => $request->status,
+                'room_desc' => count($request->rooms) . ' Rooms',
+                'lat' => $request->lat,
+                'lng' => $request->lng,
+                'address' => $request->address,
+            ]);
+            $images = $this->saveImageList($request->images,  $data->id, 'rent_hotel');
+            $rooms = $this->saveRooms($request->rooms,  $data->id, 'rent_hotel');
+            $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'rent_hotel');
+
+
+            if ($data &&  $images) {
+                return response()->json([
+                    "error" => false,
+                    'msg' => new HotelRentResource($data->refresh()),
+                ]);
+            }
+        } else {
+            $data  = ApartmentRent::create([
+                'name' => $request->name,
+                'region' => $request->region,
+                'city' => $request->city,
+                'price' =>  $request->rooms[0]['price'] ?? 0,
+                'status' => $request->status,
+                'room_desc' => count($request->rooms) . ' Rooms',
+                'lat' => $request->lat,
+                'lng' => $request->lng,
+                'address' => $request->address,
+            ]);
+            $images = $this->saveImageList($request->images,  $data->id, 'rent_apartment');
+            $rooms = $this->saveRooms($request->rooms,  $data->id, 'rent_apartment');
+            $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'rent_apartment');
+
+
+            if ($data &&  $images) {
+                return response()->json([
+                    "error" => false,
+                    'msg' => new ApartmentRentResource($data->refresh()),
+                ]);
+            }
+        }
+
+        return response()->json([
+            "error" => true,
+            'msg' => "Error occurred while creating product.",
+        ]);;
+
+        // $data  = AccommodationSale::create([
+        //     'name' => $request->name,
+        //     'region' => $request->region,
+        //     'city' => $request->city,
+        //     'price' => $request->price,
+        //     'discount' => $request->discount,
+        //     'status' => $request->status,
+        // ]);
+        //
+        // $textKeys = $this->saveTextKeys($request->text_keys,  $data->id, 'sale_accomm');
+        // $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_accomm');
+
+        // if ($data &&  $images) {
+        //     return response()->json([
+        //         "error" => false,
+        //         'msg' => new AccommodationSaleResource($data->refresh()),
+        //     ]);
+        // } else {
+        //     return response()->json([
+        //         "error" => true,
+        //         'msg' => "Error occurred while creating product.",
+        //     ]);;
+        // }
     }
 }
