@@ -22,7 +22,7 @@ class ChatResource extends JsonResource
             'owner' => (int)$this->owner,
             'message' => $this->message,
             'type' => $this->type,
-            'admin' => (int)$this->admin,
+            'admin' => $this->admin != null ? (int)$this->admin : null,
             'unread' => (bool)$this->unread,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
