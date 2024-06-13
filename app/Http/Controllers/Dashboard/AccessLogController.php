@@ -10,7 +10,7 @@ class AccessLogController extends Controller
     use ApiResponseTrait;
 
     function getAccessLogs() {
-            $accessLog = AccessLog::paginate();
+            $accessLog = AccessLog::orderBy('id', 'DESC')->paginate();
      return $this->ApiResponse(true, 'access_log', null,  $accessLog);
     }
 }
