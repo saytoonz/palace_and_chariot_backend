@@ -169,7 +169,7 @@ class DashboardController extends Controller
         });
         $hotel = HotelRequest::where('status', $status)->get()->map(function ($data) {
             $data['request_id'] = 'HOT' . ($data->id > 100 ? '00' . $data->id :  $data->id);
-            $data['category'] = 'Rentals/Accommodation';
+            $data['category'] = 'Rentals/Accommodation/Hotel';
             $data['object_type'] = 'rent_hotel';
             if($data->opened_by){
                 $dashUser =  DashboardUser::find($data->opened_by);
@@ -193,7 +193,7 @@ class DashboardController extends Controller
         });
         $apartment = ApartmentRequest::where('status', $status)->get()->map(function ($data) {
             $data['request_id'] = 'APT' . ($data->id > 100 ? '00' . $data->id :  $data->id);
-            $data['category'] = 'Rentals/Accommodation';
+            $data['category'] = 'Rentals/Accommodation/Apartment';
             $data['object_type'] = 'rent_apartment';
             if($data->opened_by){
                 $dashUser =  DashboardUser::find($data->opened_by);
