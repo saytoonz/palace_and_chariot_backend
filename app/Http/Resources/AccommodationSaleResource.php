@@ -24,6 +24,7 @@ class AccommodationSaleResource extends JsonResource
             "status" => $this->status,
             "ratings_value" => (float)$this->ratings_value,
             "object_type" => "sale_accomm",
+            "discount" => (double) $this->discount,
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),
             "gallery" => ImageResource::collection($this->gallery()),
             "keys" => VehicleKeyResource::collection($this->keys()),
