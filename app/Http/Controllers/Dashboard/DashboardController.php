@@ -291,4 +291,79 @@ class DashboardController extends Controller
             ]);
         }
     }
+
+    function updateRequestOpenedBy(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'dashboard_user_email' => ['required', 'max:255', 'email', 'string'],
+                'object_id' => ['required', 'max:255', 'int'],
+                'object_type' => ['required', 'string'],
+            ],
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $dashUser = DashboardUser::where('email', $request->dashboard_user_email)->first();
+
+        if (!$dashUser) {
+            return response()->json([
+                'error' => true,
+                'msg' => "You do not have permission to execute this action",
+            ]);
+        }
+
+        $objectType = $request->object_type;
+        $objectId = $request->object_id;
+
+        $data = null;
+        if ($objectType == 'security') {
+            $data = SecurityRequest::find($objectId);
+        } else if ($objectType == 'rent_vehicle') {
+            $data = VehicleRentRequest::find($objectId);
+        } else if ($objectType == 'rent_hotel') {
+            $data = HotelRequest::find($objectId);
+        } else if ($objectType == 'rent_apartment') {
+            $data = ApartmentRequest::find($objectId);
+        } else if ($objectType == 'sale_vehicle') {
+            $data = VehicleSaleRequest::find($objectId);
+        } else if ($objectType == 'travel') {
+            $data = TravelRequest::find($objectId);
+        } else if ($objectType == 'tour') {
+            $data = TourismRequest::find($objectId);
+        } else if ($objectType == 'sale_accomm') {
+            $data = AccommodationSaleRequest::find($objectId);
+        } else if ($objectType == 'rent_event') {
+            $data = EventRentRequest::find($objectId);
+        }
+
+
+
+        if ($data) {
+            if(!is_null($data->opened_by)){
+                return response()->json([
+                    'error' => false,
+                    'msg' => "Occupied already!",
+                ]);
+            }
+            $data->opened_by = $dashUser->id;
+            $data->save();
+            return response()->json([
+                'error' => false,
+                'msg' => "Update successful",
+            ]);
+        }else{
+            return response()->json([
+                'error' => true,
+                'msg' => "An error occurred, item not found!",
+            ]);
+        }
+    }
+
 }

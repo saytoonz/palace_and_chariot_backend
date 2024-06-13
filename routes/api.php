@@ -136,6 +136,7 @@ Route::prefix('dashboard')->group(function (){
     Route::get('get-pending-request', [DashboardController::class, 'getPendingRequest']);
     Route::get('get-closed-request', [DashboardController::class, 'getClosedRequest']);
     Route::post('update-request-status', [DashboardController::class, 'updateRequestStatus']);
+    Route::post('update-request-opened_by', [DashboardController::class, 'updateRequestOpenedBy']);
 
     Route::get('get-customers', [CustomerController::class, 'getCustomers']);
     Route::get('search-customers/{query}', [CustomerController::class, 'searchCustomer']);
