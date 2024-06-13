@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean('is_work_trip')->default(false);
             $table->boolean('is_leisure_trip')->default(false);
 
+            $table->unsignedBigInteger('opened_by')->nullable();
             $table->enum('status',['active', 'pending','close', 'deleted'])->default('pending');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

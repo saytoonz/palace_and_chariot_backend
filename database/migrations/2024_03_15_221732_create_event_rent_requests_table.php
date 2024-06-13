@@ -33,6 +33,7 @@ return new class extends Migration
             $table->boolean('need_security')->default(false);
             $table->boolean('need_transportation')->default(false);
 
+            $table->unsignedBigInteger('opened_by')->nullable();
             $table->enum('status',['active', 'pending','close', 'deleted'])->default('pending');
             $table->boolean('is_deleted')->default(false);
 

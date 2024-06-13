@@ -20,6 +20,7 @@ class VehicleRentResource extends JsonResource
             "model" => $this->model,
             "color" => $this->color,
             "price" =>(double) $this->price,
+            "discount" =>(double) $this->discount,
             "driver_fee" => (double) $this->driver_fee,
             "distance_away"  =>(double) $this->distance_away,
             "available" => (bool) $this->available,

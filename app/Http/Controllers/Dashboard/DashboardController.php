@@ -38,6 +38,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
+use App\Models\SecurityClientType;
 
 class DashboardController extends Controller
 {
@@ -98,12 +99,19 @@ class DashboardController extends Controller
         ]);
     }
 
+
+
     function getAllRequest($status)
     {
         $vRent = VehicleRentRequest::where('status', $status)->get()->map(function ($data) {
             $data['request_id'] = 'VRR' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Rentals/Vehicle';
             $data['object_type'] = 'rent_vehicle';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new VehicleRentResource(VehicleRent::find($data->vehicle_id));
             return $data;
         });
@@ -111,6 +119,11 @@ class DashboardController extends Controller
             $data['request_id'] = 'VSR' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Sales/cars';
             $data['object_type'] = 'sale_vehicle';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new VehicleSaleResource(VehicleSale::find($data->vehicle_id));
             return $data;
         });
@@ -118,6 +131,11 @@ class DashboardController extends Controller
             $data['request_id'] = 'TTR' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Travel&Tourism/Travel';
             $data['object_type'] = 'travel';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             // $data['data'] = new TourismResource(Tourism::find($data->vehicle_id));
             return $data;
         });
@@ -125,6 +143,11 @@ class DashboardController extends Controller
             $data['request_id'] = 'TTO' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Travel&Tourism/ Tourism';
             $data['object_type'] = 'tour';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new TourismResource(Tourism::find($data->tour_site_id));
             return $data;
         });
@@ -132,6 +155,15 @@ class DashboardController extends Controller
             $data['request_id'] = 'SEC' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Security';
             $data['object_type'] = 'security';
+            if($data->security_client_type_id){
+                $dashUser =  SecurityClientType::find($data->security_client_type_id);
+                $data['client_type'] = $dashUser->client_type;
+            }
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new SecurityResource(Security::find($data->security_id));
             return $data;
         });
@@ -139,6 +171,11 @@ class DashboardController extends Controller
             $data['request_id'] = 'HOT' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Rentals/Accommodation';
             $data['object_type'] = 'rent_hotel';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new HotelRentResource(HotelRent::find($data->rent_hotel_id));
             return $data;
         });
@@ -146,6 +183,11 @@ class DashboardController extends Controller
             $data['request_id'] = 'ESR' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Rentals/Event space';
             $data['object_type'] = 'rent_event';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new EventServiceRentResource(EventServiceRent::find($data->rent_event_id));
             return $data;
         });
@@ -153,6 +195,11 @@ class DashboardController extends Controller
             $data['request_id'] = 'APT' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Rentals/Accommodation';
             $data['object_type'] = 'rent_apartment';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new ApartmentRentResource(ApartmentRent::find($data->rent_apartment_id));
             return $data;
         });
@@ -160,6 +207,11 @@ class DashboardController extends Controller
             $data['request_id'] = 'SACC' . ($data->id > 100 ? '00' . $data->id :  $data->id);
             $data['category'] = 'Sales/Houses';
             $data['object_type'] = 'sale_accomm';
+            if($data->opened_by){
+                $dashUser =  DashboardUser::find($data->opened_by);
+                $data['opened_by'] = $dashUser->first_name . ' ' . $dashUser->middle_name. ' ' . $dashUser->last_name;
+            }
+
             $data['data'] = new AccommodationSaleResource(AccommodationSale::find($data->accommodation_id));
             return $data;
         });
@@ -170,6 +222,8 @@ class DashboardController extends Controller
 
         return $all->sortBy('created_at')->values();
     }
+
+
 
     function updateRequestStatus(Request $request)
     {

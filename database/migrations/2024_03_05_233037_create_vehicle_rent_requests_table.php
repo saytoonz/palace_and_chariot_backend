@@ -37,7 +37,7 @@ return new class extends Migration
             $table->string('driver_phone')->nullable();
             $table->string('driver_license')->nullable();
 
-
+            $table->unsignedBigInteger('opened_by')->nullable();
             $table->enum('status',['active', 'pending','close', 'deleted'])->default('pending');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
