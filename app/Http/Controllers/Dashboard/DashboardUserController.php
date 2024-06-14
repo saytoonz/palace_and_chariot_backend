@@ -237,13 +237,8 @@ class DashboardUserController extends Controller
                 $usrArray["email_notifiction"] = $request->email_notifiction == 'true'  ? 1 : 0;
             }
 
-
-
-            if ($request->image) {
-                $avatar = $this->uploadAvatar($request, 'image', 'avatar_' . $dashUser->id . date('Y-m-d H:i:s'));
-                if ($avatar) {
-                    $usrArray["image_url"] = $avatar;
-                }
+            if ($request->image_url) {
+                $usrArray["image_url"] = $request->image_url;
             }
 
             $dashUser->update($usrArray);
@@ -402,12 +397,8 @@ class DashboardUserController extends Controller
                 $usrArray["is_deleted"] = $request->is_deleted;
             }
 
-
-            if ($request->image) {
-                $avatar = $this->uploadAvatar($request, 'image', 'avatar_' . $dashUser->id . date('Y-m-d H:i:s'));
-                if ($avatar) {
-                    $usrArray["image_url"] = $avatar;
-                }
+            if ($request->image_url) {
+                $usrArray["image_url"] = $request->image_url;
             }
 
             $dashUser->update($usrArray);
