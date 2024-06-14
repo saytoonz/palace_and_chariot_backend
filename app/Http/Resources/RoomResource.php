@@ -21,6 +21,8 @@ class RoomResource extends JsonResource
             'image' => env('APP_URL') . $this->image,
             'price' => (double) $this->price,
             'discount' => (double) $this->discount,
+            'adults' =>  (int)$this->adults,
+            'children' =>  (int)$this->children,
             'object_id' => (int) $this->object_id,
             'object_type' => $this->object_type,
             'status' => $this->status,
