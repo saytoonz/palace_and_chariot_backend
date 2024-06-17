@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\AccessLogController;
 use App\Http\Controllers\AccommodationSaleController;
+use App\Http\Controllers\Dashboard\ActivityLogController;
 use App\Http\Controllers\ApartmentRentController;
 use App\Http\Controllers\AppUserController;
 use App\Http\Controllers\AppUserNotificationController;
@@ -142,6 +143,7 @@ Route::prefix('dashboard')->group(function (){
     Route::get('search-customers/{query}', [CustomerController::class, 'searchCustomer']);
 
     Route::get('get-access-logs', [AccessLogController::class, 'getAccessLogs']);
+    Route::get('get-activity-logs', [ActivityLogController::class, 'getActivityLogs']);
 
     Route::get('admin-get-active-users/{admin_id}', [DashboardUserController::class, 'adminGetActiveUsers']);
     Route::post('admin-update-user/{admin_id}', [DashboardUserController::class, 'adminUpdateUser']);

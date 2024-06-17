@@ -79,6 +79,7 @@ class DashboardUserController extends Controller
                 'device' => $request->header('User-Agent'),
             ]);
 
+            $dashUser->country = $country;
             $dashUser->last_login = date('Y-m-d H:i:s');
             $dashUser->save();
 
@@ -402,6 +403,7 @@ class DashboardUserController extends Controller
             }
 
             $dashUser->update($usrArray);
+
 
             return response()->json([
                 'error' => false,

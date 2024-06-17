@@ -38,6 +38,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\SecurityClientType;
 
 class DashboardController extends Controller
@@ -280,6 +281,18 @@ class DashboardController extends Controller
         if ($data) {
             $data->status = $request->status;
             $data->save();
+
+            /// Create activity log
+
+            $appUser = AppUser::find($data->app_user_id);
+            ActivityLog::create([
+                'dashboard_user_id' => $dashUser->id,
+                'app_user_id' => $appUser->id,
+                'activity' => 'Changed ['.$appUser->first_name.' '.$appUser->last_name.'] request to '.($request->status == 'close'? 'closed' : $request->status),
+                'country' => $dashUser->country,
+                'device' => $request->header('User-Agent'),
+            ]);
+
             return response()->json([
                 'error' => false,
                 'msg' => "Update successful",
@@ -354,6 +367,18 @@ class DashboardController extends Controller
             }
             $data->opened_by = $dashUser->id;
             $data->save();
+
+            /// Create activity log
+            $appUser = AppUser::find($data->app_user_id);
+            ActivityLog::create([
+                'dashboard_user_id' => $dashUser->id,
+                'app_user_id' => $appUser->id,
+                'activity' => 'Opened request from ['.$appUser->first_name.' '.$appUser->last_name.']',
+                'country' => $dashUser->country,
+                'device' => $request->header('User-Agent'),
+            ]);
+
+
             return response()->json([
                 'error' => false,
                 'msg' => "Update successful",

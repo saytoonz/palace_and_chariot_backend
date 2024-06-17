@@ -4,6 +4,7 @@ namespace  App\Traits;
 
 use App\Http\Resources\AccessLogResource;
 use App\Http\Resources\AccommodationSaleResource;
+use App\Http\Resources\ActivityLogResource;
 use App\Http\Resources\AppUserResources;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\DashboardUserResources;
@@ -27,6 +28,7 @@ trait ApiResponseTrait
             'in_app_notification' => InAppNotificationResource::collection($paginateData),
             'dashboar_user' => DashboardUserResources::collection($paginateData),
             'access_log' => AccessLogResource::collection($paginateData),
+            'activity_log' => ActivityLogResource::collection($paginateData),
         };
 
         $headers = [];

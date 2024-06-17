@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\DashboardChatResource;
+use App\Models\ActivityLog;
+use App\Models\AppUser;
 use App\Models\ChatList;
 use App\Models\ChatMessage;
+use App\Models\DashboardUser;
 use App\Traits\ApiResponseTrait;
+use App\Traits\CountryTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +21,7 @@ class MessagesController extends Controller
 {
 
 use ApiResponseTrait;
+use CountryTrait;
 
     public function getChatList()
     {
@@ -90,6 +95,20 @@ use ApiResponseTrait;
 
                 $chatListItem->unread = $chatListItem->unread + 1;
                 $chatListItem->save();
+
+                /// Create activity log
+                $appUser = AppUser::find($request->to);
+                $dashUser = DashboardUser::find($request->admin);
+                ActivityLog::create([
+                    'dashboard_user_id' => $request->admin,
+                    'app_user_id' => $request->to,
+                    'activity' => 'Responded to a message from ['.$appUser->first_name.' '.$appUser->last_name.']',
+                    'country' => $dashUser->country,
+                    'device' => $request->header('User-Agent'),
+                ]);
+
+
+
 
                 // $notifs = Notification::where("uid", request('to'))->get()->first();
                 // if ($notifs && $notifs->push_messages == 1) {

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female'])->nullable();
 
             $table->string('last_login')->nullable();
+            $table->string('country')->nullable();
             $table->string('image_url')->nullable();
             $table->enum('access', ['standard', 'admin'])->default('standard');
             //
