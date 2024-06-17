@@ -548,4 +548,51 @@ class ProductController extends Controller
         //     ]);;
         // }
     }
+
+    function createRentEventServiceProduct(Request $request) {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'logged_in_user_id' => ['required', 'int'],
+                'name' => ['required', 'string'],
+                'status' => ['required', 'string'],
+                'region' => ['required', 'string'],
+                'city' => ['required', 'string'],
+                'address' => ['required', 'string'],
+                'lat' => ['required'],
+                'lng' => ['required'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $data  = EventServiceRent::create([
+            'name' => $request->name,
+            'region' => $request->region,
+            'city' => $request->city,
+            'price' =>  $request->rooms[0]['price'] ?? 0,
+            'status' => $request->status,
+            'lat' => $request->lat,
+            'lng' => $request->lng,
+            'address' => $request->address,
+        ]);
+        $images = $this->saveImageList($request->images,  $data->id, 'rent_event');
+        $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'rent_event');
+
+
+        if ($data &&  $images) {
+            return response()->json([
+                "error" => false,
+                'msg' => new EventServiceRentResource($data->refresh()),
+            ]);
+        }
+    }
 }
