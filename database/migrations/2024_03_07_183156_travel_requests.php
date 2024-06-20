@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('country_code')->nullable();
             $table->string('phone')->nullable();
 
-            $table->unsignedBigInteger('depart_location_id')->nullable();
+            $table->text('depart_location')->nullable();
             $table->string('depart_date')->nullable();
-            $table->unsignedBigInteger('return_location_id')->nullable();
+            $table->text('return_location')->nullable();
             $table->string('return_date')->nullable();
 
 
