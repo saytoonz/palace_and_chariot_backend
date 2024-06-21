@@ -116,6 +116,7 @@ Route::prefix('app')->group(function (){
     //Requests
     Route::get('ongoing-requests/{app_user_id}', [SharedController::class,'ongoingRequests']);
     Route::get('completed-requests/{app_user_id}', [SharedController::class,'completedRequests']);
+    Route::post('cancel-requests', [SharedController::class,'cancelRequests']);
     //Object
     Route::get('get-object/{object_id}/{object_type}', [SharedController::class, 'getObject']);
 
