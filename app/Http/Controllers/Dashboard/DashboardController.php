@@ -221,7 +221,7 @@ class DashboardController extends Controller
             ->merge($security)->merge($hotel)->merge($events)
             ->merge($apartment)->merge($accomodation);
 
-        return $all->sortBy('created_at')->values();
+        return $all->sortBy('updated_at', SORT_REGULAR, true)->values();
     }
 
 
