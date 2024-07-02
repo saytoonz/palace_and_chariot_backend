@@ -116,6 +116,7 @@ class DashboardUserController extends Controller
 
 
         $dashUser = DashboardUser::where('id', $request->id)->where('email', $request->email)
+            ->where('status', 'active')->where('is_deleted', false)
             ->first();
 
         if ($dashUser) {
