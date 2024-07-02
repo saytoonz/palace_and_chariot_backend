@@ -96,6 +96,42 @@ class DashboardUserController extends Controller
         }
     }
 
+
+    public function getDashboardUser(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id' => ['required', 'max:255', 'int'],
+                'email' => ['required', 'max:255', 'email', 'string'],
+            ],
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+
+        $dashUser = DashboardUser::where('id', $request->id)->where('email', $request->email)
+            ->first();
+
+        if ($dashUser) {
+            return response()->json([
+                "error" => false,
+                'msg' => "success",
+                'data' => new DashboardUserResources($dashUser->refresh()),
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => "No active user found with this credentials",
+            ]);
+        }
+    }
+
     public function  forgotPassword(Request $request)
     {
         $validator = Validator::make(
