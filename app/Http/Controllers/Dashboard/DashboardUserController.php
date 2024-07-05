@@ -221,6 +221,13 @@ class DashboardUserController extends Controller
             $request->all(),
             [
                 'dashboard_user_id' => ['required',  'int'],
+                'first_name' => ['required'],
+                'last_name' => ['required'],
+                'phone' => ['required'],
+                'date_of_birth' => ['required'],
+                'gender' => ['required'],
+                'employee_id' => ['required'],
+                'date_employed' => ['required'],
             ],
         );
 
@@ -237,6 +244,8 @@ class DashboardUserController extends Controller
         if ($dashUser) {
             //Updates user
             $usrArray = [];
+
+
             if ($request->first_name) {
                 $usrArray["first_name"] = $request->first_name;
             }
@@ -258,9 +267,24 @@ class DashboardUserController extends Controller
                 $usrArray["date_of_birth"] = $request->date_of_birth;
             }
 
+            // if ($request->access) {
+            //     $usrArray["access"] = $request->access;
+            // }
+
+            if ($request->email) {
+                $usrArray["email"] = $request->email;
+            }
             if ($request->gender) {
                 $usrArray["gender"] = $request->gender;
             }
+
+            if ($request->employee_id) {
+                $usrArray["employee_id"] = $request->employee_id;
+            }
+            if ($request->date_employed) {
+                $usrArray["date_employed"] = $request->date_employed;
+            }
+
 
 
             if ($request->request_confirmation_notifiction != null) {
