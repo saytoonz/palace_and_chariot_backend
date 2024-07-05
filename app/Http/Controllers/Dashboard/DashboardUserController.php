@@ -349,7 +349,7 @@ class DashboardUserController extends Controller
             ]);
         }
 
-        $dashUsers = DashboardUser::where('id', '!=', $adminId)->where('status', 'active')->where('is_deleted', 0)->paginate();
+        $dashUsers = DashboardUser::where('id', '!=', $adminId)->where('status', 'active')->where('is_deleted', 0)->paginate(1000);
         return $this->ApiResponse(true, 'dashboar_user', null, $dashUsers);
     }
 
