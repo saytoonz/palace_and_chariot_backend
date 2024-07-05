@@ -13,8 +13,8 @@ class CustomerController extends Controller
     function getCustomers()
     {
         $appUsers = AppUser::where('is_active', true)->where('is_banned', false)
-            ->where('is_deleted', false)
-            ->paginate();
+            ->where('is_deleted', false)->orderBy('created_at','desc')
+            ->paginate(1200);
 
         return $this->ApiResponse(true, 'app_user', null,  $appUsers);
     }
