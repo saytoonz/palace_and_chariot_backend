@@ -115,10 +115,10 @@ class ProductController extends Controller
 
     function saveImageList($imageList, $objectId, $objectType)
     {
-
+        Image::where('object_id', $objectId)->where('object_type', $objectType)->delete();
         $imagePaths = explode(',', $imageList);
-
         foreach ($imagePaths as $imagePath) {
+
             Image::create([
                 'object_id' => $objectId,
                 'object_type' => $objectType,
@@ -130,6 +130,8 @@ class ProductController extends Controller
 
     private function saveTextKeys($textKeys,  $objectId, $objectType)
     {
+        VehicleTextKey::where('object_id', $objectId)->where('object_type', $objectType)->delete();
+
         foreach ($textKeys as $key => $value) {
             if (!is_null($value) && $value !== '' && $value !== 0 && $value !== '0') {
                 VehicleTextKey::create([
@@ -144,6 +146,8 @@ class ProductController extends Controller
 
     private function saveImageKeys($imageKeys, $objectId, $objectType)
     {
+        VehicleKeys::where('object_id', $objectId)->where('object_type', $objectType)->delete();
+
         foreach ($imageKeys as $key => $data) {
             if (!is_null($data['data']) && $data['data'] !== '' && $data['data'] !== 0 && $data['data'] !== '0') {
                 VehicleKeys::create([
@@ -160,28 +164,31 @@ class ProductController extends Controller
 
     private function saveRooms($rooms, $objectId, $objectType)
     {
+        Rooms::where('object_id', $objectId)->where('object_type', $objectType)->delete();
+
         foreach ($rooms as  $data) {
-             $room =    Rooms::create([
-                    'name' => $data['room_type'],
-                    'discount' => $data['discount'],
-                    'price' => $data['price'],
-                    'adults' => $data['adults'],
-                    'children' => $data['children'],
-                    'image' => $data['image'],
-                    'object_id' => $objectId,
-                    'object_type' => $objectType,
+            $room =    Rooms::create([
+                'name' => $data['room_type'],
+                'discount' => $data['discount'] ?? 0,
+                'price' => $data['price'] ?? "0",
+                'adults' => $data['adults'] ?? 0,
+                'children' => $data['children'] ?? 0,
+                'image' => $data['image'],
+                'object_id' => $objectId,
+                'object_type' => $objectType,
+            ]);
+
+            VehicleKeys::where('object_id', $room->id)->where('object_type', 'room')->delete();
+
+            for ($i = 0; $i < count($data['facilities'] ?? []); $i++) {
+                VehicleKeys::create([
+                    'name' => $data['facilities'][$i]['name'],
+                    'icon' => $data['facilities'][$i]['icon'],
+                    'object_id' => $room->id,
+                    'object_type' => 'room',
+
                 ]);
-
-                for ($i=0; $i < count($data['facilities']); $i++) {
-                    VehicleKeys::create([
-                        'name' => $data['facilities'][$i]['name'],
-                        'icon' => $data['facilities'][$i]['icon'],
-                        'object_id' => $room->id,
-                        'object_type' => 'room',
-
-                    ]);
-                }
-
+            }
         }
     }
 
@@ -254,9 +261,7 @@ class ProductController extends Controller
 
         $reqData = $request->except(['logged_in_user_id']);
         $data  = Security::create($reqData);
-        $images = $this->saveImageList($request->images,  $data->id, 'tour');
-
-        if ($data &&  $images) {
+        if ($data) {
             return response()->json([
                 "error" => false,
                 'msg' => new SecurityResource($data->refresh()),
@@ -549,7 +554,8 @@ class ProductController extends Controller
         // }
     }
 
-    function createRentEventServiceProduct(Request $request) {
+    function createRentEventServiceProduct(Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             [
@@ -592,6 +598,419 @@ class ProductController extends Controller
             return response()->json([
                 "error" => false,
                 'msg' => new EventServiceRentResource($data->refresh()),
+            ]);
+        }
+    }
+
+
+    ///
+    ///
+    ///    UPDATE PRODUCTS
+    ///
+    ///
+    ///
+
+
+    function UpdateTourismProduct(Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'product_id' => ['required', 'int'],
+                'logged_in_user_id' => ['required', 'int'],
+                'title' => ['required', 'string'],
+                'overview' => ['required', 'string'],
+                'price' => ['required'],
+                'available_time' => ['required'],
+                'status' => ['required', 'string'],
+                'send_discount_notification' => ['required', 'bool'],
+                'images' => ['required', 'string']
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $reqData = $request->except(['logged_in_user_id', 'product_id', 'send_discount_notification', 'images']);
+        $data  = Tourism::find($request->product_id);
+        $data->update($reqData);
+        $images = $this->saveImageList($request->images,  $data->id, 'tour');
+
+        if ($data &&  $images) {
+            return response()->json([
+                "error" => false,
+                'msg' => new TourismResource($data->refresh()),
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => "Error occurred while creating product.",
+            ]);;
+        }
+    }
+
+
+
+    function updateSecurityProduct(Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'product_id' => ['required', 'int'],
+                'logged_in_user_id' => ['required', 'int'],
+                'title' => ['required', 'string'],
+                'status' => ['required', 'string'],
+                'image' => ['required', 'string'],
+                'available_to' => ['required', 'string'],
+                'html_description' => ['required', 'string'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $reqData = $request->except(['logged_in_user_id', 'product_id']);
+        $data  = Security::find($request->product_id);
+        $data->update($reqData);
+        if ($data->update($reqData)) {
+            return response()->json([
+                "error" => false,
+                'msg' => new SecurityResource($data->refresh()),
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => "Error occurred while creating product.",
+            ]);;
+        }
+    }
+
+
+    function updateSaleVehicleProduct(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'product_id' => ['required', 'int'],
+                'logged_in_user_id' => ['required', 'int'],
+                'name' => ['required', 'string'],
+                'vehicle_make_id' => ['required', 'int'],
+                'price' => ['required'],
+                'status' => ['required', 'string'],
+                'model' => ['required', 'string'],
+                'color' => ['required', 'string'],
+                'send_discount_notification' => ['required', 'bool'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+                'text_keys' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+
+        $data  = VehicleSale::find($request->product_id);
+        $data->update([
+            'name' => $request->name,
+            'vehicle_make_id' => $request->vehicle_make_id,
+            'model' => $request->model,
+            'color' => $request->color,
+            'price' => $request->price,
+            'discount' => $request->discount,
+            'quantity' => $request->quantity,
+            'status' => $request->status,
+        ]);
+        $images = $this->saveImageList($request->images,  $data->id, 'sale_vehicle');
+        $textKeys = $this->saveTextKeys($request->text_keys,  $data->id, 'sale_vehicle');
+        $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_vehicle');
+
+        if ($data &&  $images) {
+            return response()->json([
+                "error" => false,
+                'msg' => new VehicleSaleResource($data->refresh()),
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => "Error occurred while creating product.",
+            ]);;
+        }
+    }
+
+
+    function updateSaleAccommodationProduct(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'product_id' => ['required', 'int'],
+                'logged_in_user_id' => ['required', 'int'],
+                'name' => ['required', 'string'],
+                'price' => ['required'],
+                'status' => ['required', 'string'],
+                'region' => ['required', 'string'],
+                'city' => ['required', 'string'],
+                'send_discount_notification' => ['required', 'bool'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+                'text_keys' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+
+        $data  = AccommodationSale::find($request->product_id);
+        $data->update([
+            'name' => $request->name,
+            'region' => $request->region,
+            'city' => $request->city,
+            'price' => $request->price,
+            'discount' => $request->discount,
+            'status' => $request->status,
+        ]);
+        $images = $this->saveImageList($request->images,  $data->id, 'sale_accomm');
+        $textKeys = $this->saveTextKeys($request->text_keys,  $data->id, 'sale_accomm');
+        $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_accomm');
+
+        if ($data &&  $images) {
+            return response()->json([
+                "error" => false,
+                'msg' => new AccommodationSaleResource($data->refresh()),
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => "Error occurred while creating product.",
+            ]);;
+        }
+    }
+
+    function updateRentVehicleProduct(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'product_id' => ['required', 'int'],
+                'logged_in_user_id' => ['required', 'int'],
+                'type' => ['required', 'string', 'max:3'],
+                'name' => ['required', 'string'],
+                'vehicle_make_id' => ['required', 'int'],
+                'price' => ['required'],
+                'driver_fee' => ['required'],
+                'status' => ['required', 'string'],
+                'color' => ['required', 'string'],
+                'send_discount_notification' => ['required', 'bool'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $data  = VehicleRent::find($request->product_id);
+        $data->update([
+            'name' => $request->name,
+            'vehicle_make_id' => $request->vehicle_make_id,
+            'model' => $request->model,
+            'color' => $request->color,
+            'price' => $request->price,
+            'discount' => $request->discount,
+            'quantity' => $request->quantity,
+            'driver_fee' => $request->driver_fee,
+            'location' => $request->location,
+            'free_cancellation_after' => $request->free_cancellation_after,
+            'type' => $request->type,
+            'status' => $request->status,
+
+        ]);
+        $images = $this->saveImageList($request->images,  $data->id, 'vehicle_rent');
+        $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'vehicle_rent');
+
+        if ($data &&  $images) {
+            return response()->json([
+                "error" => false,
+                'msg' => new VehicleRentResource($data->refresh()),
+            ]);
+        } else {
+            return response()->json([
+                "error" => true,
+                'msg' => "Error occurred while creating product.",
+            ]);;
+        }
+
+        return $request;
+    }
+
+    function updateRentAccommodationProduct(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'product_id' => ['required', 'int'],
+                'logged_in_user_id' => ['required', 'int'],
+                'type' => ['required', 'string'],
+                'name' => ['required', 'string'],
+                'status' => ['required', 'string'],
+                'region' => ['required', 'string'],
+                'city' => ['required', 'string'],
+                'address' => ['required', 'string'],
+                'lat' => ['required'],
+                'lng' => ['required'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+                'rooms' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+
+
+        if ($request->type === 'hotel') {
+            $data  = HotelRent::find($request->product_id);
+            $data->update([
+                'name' => $request->name,
+                'region' => $request->region,
+                'city' => $request->city,
+                'price' =>  $request->rooms[0]['price'] ?? 0,
+                'status' => $request->status,
+                'room_desc' => count($request->rooms) . ' Rooms',
+                'lat' => $request->lat,
+                'lng' => $request->lng,
+                'address' => $request->address,
+            ]);
+            $images = $this->saveImageList($request->images,  $data->id, 'rent_hotel');
+            $rooms = $this->saveRooms($request->rooms,  $data->id, 'rent_hotel');
+            $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'rent_hotel');
+
+
+            if ($data &&  $images) {
+                return response()->json([
+                    "error" => false,
+                    'msg' => new HotelRentResource($data->refresh()),
+                ]);
+            }
+        } else {
+            $data  = ApartmentRent::find($request->product_id);
+            $data->update([
+                'name' => $request->name,
+                'region' => $request->region,
+                'city' => $request->city,
+                'price' =>  $request->rooms[0]['price'] ?? 0,
+                'status' => $request->status,
+                'room_desc' => count($request->rooms) . ' Rooms',
+                'lat' => $request->lat,
+                'lng' => $request->lng,
+                'address' => $request->address,
+            ]);
+            $images = $this->saveImageList($request->images,  $data->id, 'rent_apartment');
+            $rooms = $this->saveRooms($request->rooms,  $data->id, 'rent_apartment');
+            $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'rent_apartment');
+
+
+            if ($data &&  $images) {
+                return response()->json([
+                    "error" => false,
+                    'msg' => new ApartmentRentResource($data->refresh()),
+                ]);
+            }
+        }
+
+        return response()->json([
+            "error" => true,
+            'msg' => "Error occurred while creating product.",
+        ]);
+    }
+
+
+    function updateRentEventServiceProduct(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'product_id' => ['required', 'int'],
+                'logged_in_user_id' => ['required', 'int'],
+                'name' => ['required', 'string'],
+                'status' => ['required', 'string'],
+                'region' => ['required', 'string'],
+                'city' => ['required', 'string'],
+                'address' => ['required', 'string'],
+                'lat' => ['required'],
+                'lng' => ['required'],
+                'images' => ['required', 'string'],
+                'image_Keys' => ['required', 'array'],
+            ],
+        );
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+        $data  = EventServiceRent::find($request->product_id);
+
+        $data->update([
+            'name' => $request->name,
+            'region' => $request->region,
+            'city' => $request->city,
+            'price' =>  $request->rooms[0]['price'] ?? 0,
+            'status' => $request->status,
+            'lat' => $request->lat,
+            'lng' => $request->lng,
+            'address' => $request->address,
+        ]);
+        $images = $this->saveImageList($request->images,  $data->id, 'rent_event');
+        $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'rent_event');
+
+
+        if ($data &&  $images) {
+            return response()->json([
+                "error" => false,
+                'msg' => new EventServiceRentResource($data->refresh()),
+            ]);
+        }else{
+            return response()->json([
+                "error" => true,
+                'msg' => "Error occurred while creating product.",
             ]);
         }
     }

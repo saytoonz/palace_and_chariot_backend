@@ -168,6 +168,13 @@ Route::prefix('dashboard')->group(function (){
     Route::post('create-rent-accommodation-product', [ProductController::class, 'createRentAccommodationProduct']);
     Route::post('create-rent-event-service', [ProductController::class, 'createRentEventServiceProduct']);
 
+    Route::post('update-tourism-product', [ProductController::class, 'updateTourismProduct']);
+    Route::post('update-security-product', [ProductController::class, 'updateSecurityProduct']);
+    Route::post('update-sale-vehicle-product', [ProductController::class, 'updateSaleVehicleProduct']);
+    Route::post('update-sale-accommodation-product', [ProductController::class, 'updateSaleAccommodationProduct']);
+    Route::post('update-rent-vehicle-product', [ProductController::class, 'updateRentVehicleProduct']);
+    Route::post('update-rent-accommodation-product', [ProductController::class, 'updateRentAccommodationProduct']);
+    Route::post('update-rent-event-service', [ProductController::class, 'updateRentEventServiceProduct']);
 
 
 

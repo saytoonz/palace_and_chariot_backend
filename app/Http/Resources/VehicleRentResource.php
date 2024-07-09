@@ -28,6 +28,7 @@ class VehicleRentResource extends JsonResource
             "available" => (bool) $this->available,
             "type" => $this->type,
             "status" => $this->status,
+            "location" => $this->location,
             "ratings_value" => (double)$this->ratings_value,
             "object_type" => "rent_vehicle",
             "is_favorite" => (bool) $this->isFavorite($request->app_user_id),

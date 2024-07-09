@@ -24,6 +24,7 @@ class TourismResource extends JsonResource
             "available_time" => $this->available_time,
             "free_cancellation" => (bool)$this->free_cancellation,
             "can_pick_up" => (bool)$this->can_pick_up,
+            "discount" =>(double) $this->discount,
             "can_provide_security" => (bool)$this->can_provide_security,
             'status' => $this->status,
             "object_type" => "tour",
