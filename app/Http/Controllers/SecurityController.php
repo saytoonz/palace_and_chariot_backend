@@ -18,7 +18,7 @@ class SecurityController extends Controller
 
     function getAllSecurities()
     {
-        $securities = Security::where('status', 'active')->paginate();
+        $securities = Security::where('status', 'active')->orderBy('id', 'desc')->paginate();
         return json_decode($this->ApiResponse(true, 'security', null, $securities, true)->getContent());
     }
 

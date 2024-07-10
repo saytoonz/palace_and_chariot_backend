@@ -15,7 +15,7 @@ class TourismController extends Controller
 
     function getSites()
     {
-        $data = Tourism::where('status', 'active')->get();
+        $data = Tourism::where('status', 'active')->orderBy('id', 'desc')->get();
         return response()->json([
             'error' => false,
             'msg' => "success",

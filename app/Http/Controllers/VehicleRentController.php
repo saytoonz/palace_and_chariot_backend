@@ -29,7 +29,7 @@ class VehicleRentController extends Controller
         if ($request->ratings_desc == 'true') $query->orderBy('ratings_value', 'DESC');
 
 
-        $reuslt =  $query->paginate();
+        $reuslt =  $query->orderBy('id', 'desc')->paginate();
         return $this->ApiResponse(true, 'vehicle_rent', null, $reuslt, true);
     }
 

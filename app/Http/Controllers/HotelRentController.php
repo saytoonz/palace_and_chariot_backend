@@ -13,7 +13,7 @@ class HotelRentController extends Controller
 {
     function getHotelsServices()
     {
-        $data = HotelRent::where('status', 'active')->get();
+        $data = HotelRent::where('status', 'active')->orderBy('id', 'desc')->get();
 
         return response()->json([
             'error' => false,

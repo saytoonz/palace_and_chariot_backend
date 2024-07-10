@@ -12,7 +12,7 @@ class ApartmentRentController extends Controller
 {
     function getApartmentServices()
     {
-        $data = ApartmentRent::where('status', 'active')->get();
+        $data = ApartmentRent::where('status', 'active')->orderBy('id', 'desc')->get();
 
         return response()->json([
             'error' => false,

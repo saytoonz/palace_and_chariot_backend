@@ -33,7 +33,7 @@ class InAppNotificationController extends Controller
 
     function getUserInAppNorifications($appUserId)
     {
-        $data = InAppNotification::where('status', 'active')->get()->groupBy(function ($item) {
+        $data = InAppNotification::where('status', 'active')->orderBy('id', 'desc')->get()->groupBy(function ($item) {
             return Carbon::parse($item->created_at)->format('Y-m-d');
         });
 

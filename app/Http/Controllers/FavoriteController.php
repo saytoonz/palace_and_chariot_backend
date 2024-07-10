@@ -83,7 +83,7 @@ class FavoriteController extends Controller
 
     function getUserFavorites($appUserId)
     {
-        $data =  FavoriteResource::collection(Favorite::where('type','!=','travel')->where('app_user_id', $appUserId)->get());
+        $data =  FavoriteResource::collection(Favorite::where('type','!=','travel')->where('app_user_id', $appUserId)->orderBy('id', 'desc')->get());
         $data = $data->groupBy(function ($item) {
             return Carbon::parse($item->created_at)->format('Y-m-d');
         }) ;

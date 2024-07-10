@@ -15,7 +15,7 @@ class AccommodationSaleController extends Controller
 
     function getSaleAccomms()
     {
-        $data =  AccommodationSale::paginate();
+        $data =  AccommodationSale::orderBy('id', 'desc')->paginate();
         return $this->ApiResponse(true, 'accomm_sale', null, $data, true);
     }
 

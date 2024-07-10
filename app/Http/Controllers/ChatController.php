@@ -21,7 +21,7 @@ class ChatController extends Controller
             $request->all(),
             [
                 'from' =>  ['required', 'int'],
-                'message' =>  ['required', 'int'],
+                'message' =>  ['required'],
                 'object_id' => ['required', 'int'],
                 'object_type' =>  ['required', 'string'],
             ]

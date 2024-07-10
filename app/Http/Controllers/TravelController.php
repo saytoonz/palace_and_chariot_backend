@@ -15,7 +15,7 @@ class TravelController extends Controller
     //
     function getLocations()
     {
-        $data = TravelLocations::where('status', 'active')->get();
+        $data = TravelLocations::where('status', 'active')->orderBy('id', 'desc')->get();
         return response()->json([
             'error' => false,
             'msg' => "success",

@@ -17,7 +17,7 @@ class VehicleSaleController extends Controller
     {
         $data =  VehicleSale::with(['make']) ->where(function ($query) use ($request) {
             if (isset($request->make_id))   $query->where('vehicle_make_id', $request->make_id);
-        })->paginate();
+        })->orderBy('id', 'desc')->paginate();
         return $this->ApiResponse(true, 'vehicle_sale', null, $data, true);
     }
 

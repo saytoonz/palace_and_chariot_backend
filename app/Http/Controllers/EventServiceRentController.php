@@ -12,7 +12,7 @@ class EventServiceRentController extends Controller
 {
     function getEventServices()
     {
-        $data = EventServiceRent::where('status', 'active')->get();
+        $data = EventServiceRent::where('status', 'active')->orderBy('id', 'desc')->get();
 
         return response()->json([
             'error' => false,
