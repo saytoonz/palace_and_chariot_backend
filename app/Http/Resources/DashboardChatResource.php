@@ -26,9 +26,7 @@ class DashboardChatResource extends JsonResource
             "type" => $this->type,
             'admin' => $this->admin,
             "unread" => (bool)$this->unread,
-            "unreads"=> ChatMessage::where(function ($query) {
-                $query->where('from', $this->from);
-            })->where('object_id', $this->object_id)->where('object_type', $this->object_type)->count(),
+            "unreads"=> ChatMessage::where('from', $this->from)->where('object_id', $this->object_id)->where('object_type', $this->object_type)->where('unread', true)->count(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
             'status' => $this->status,

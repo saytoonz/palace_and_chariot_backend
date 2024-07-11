@@ -137,15 +137,10 @@ use CountryTrait;
             //Update Chat messages set unread to false
             //That is what dashboard uses to check
             // unread messages
-            ChatMessage::where(function ($query) use ($appUserId) {
-                $query->where('from', $appUserId);
-                $query->orwhere('to', $appUserId);
-            })
+                ChatMessage::where('from', $appUserId)
                 ->where('object_id', $objectId)
                 ->where('object_type', $objectType)
-            ->update([
-                'unread' => false,
-            ]);
+                ->update(['unread' => false]) ;
 
 
             $chats = ChatMessage::where(function ($query) use ($appUserId) {
@@ -159,6 +154,7 @@ use CountryTrait;
 
             return $this->ApiResponse(true, 'chats', null, $chats, true);
         } catch (\Throwable $th) {
+            // throw $th;
             $response["error"] = true;
             $response["message"] = "Server error!";
             return $response;
@@ -172,15 +168,10 @@ use CountryTrait;
             //Update Chat messages set unread to false
             //That is what dashboard uses to check
             // unread messages
-            ChatMessage::where(function ($query) use ($appUserId) {
-                $query->where('from', $appUserId);
-                $query->orwhere('to', $appUserId);
-            })
-                ->where('object_id', $objectId)
-                ->where('object_type', $objectType)
-            ->update([
-                'unread' => false,
-            ]);
+            ChatMessage::where('from', $appUserId)
+            ->where('object_id', $objectId)
+            ->where('object_type', $objectType)
+            ->update(['unread' => false]) ;
 
 
             $chats = ChatMessage::where('id', '>', $lastId)->where(function ($query) use ($appUserId) {
