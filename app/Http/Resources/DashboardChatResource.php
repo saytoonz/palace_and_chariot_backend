@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\AppUser;
+use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,6 +26,10 @@ class DashboardChatResource extends JsonResource
             "type" => $this->type,
             'admin' => $this->admin,
             "unread" => (bool)$this->unread,
+            "unreads"=> ChatMessage::where(function ($query) {
+                $query->where('from', $this->from,);
+                $query->orwhere('to', $this->from,);
+            })->where('object_id', $this->object_id)->where('object_type', $this->object_type)->count(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
             'status' => $this->status,
