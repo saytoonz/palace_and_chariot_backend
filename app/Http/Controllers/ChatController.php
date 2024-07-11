@@ -109,6 +109,13 @@ class ChatController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($quantity);
 
+                ChatList::where('owner', $appUserId)
+                ->where('object_id', $objectId)
+                ->where('object_type', $objectType)
+                ->update([
+                    'unread' => 0
+                ]);
+
             return $this->ApiResponse(true, 'chats', null, $chats, true);
         } catch (\Throwable $th) {
             // throw $th;
@@ -131,6 +138,12 @@ class ChatController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate(100);
 
+                ChatList::where('owner', $appUserId)
+                ->where('object_id', $objectId)
+                ->where('object_type', $objectType)
+                ->update([
+                    'unread' => 0
+                ]);
 
             return $this->ApiResponse(true, 'chats', null, $chats, true);
         } catch (\Throwable $th) {
