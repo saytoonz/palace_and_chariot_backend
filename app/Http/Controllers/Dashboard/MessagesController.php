@@ -134,6 +134,20 @@ use CountryTrait;
     {
         $response = array("error" => FALSE);
         try {
+            //Update Chat messages set unread to false
+            //That is what dashboard uses to check
+            // unread messages
+            ChatMessage::where(function ($query) use ($appUserId) {
+                $query->where('from', $appUserId);
+                $query->orwhere('to', $appUserId);
+            })
+                ->where('object_id', $objectId)
+                ->where('object_type', $objectType)
+            ->update([
+                'unread' => false,
+            ]);
+
+
             $chats = ChatMessage::where(function ($query) use ($appUserId) {
                 $query->where('from', $appUserId);
                 $query->orwhere('to', $appUserId);
@@ -155,6 +169,20 @@ use CountryTrait;
     {
         $response = array("error" => FALSE);
         try {
+            //Update Chat messages set unread to false
+            //That is what dashboard uses to check
+            // unread messages
+            ChatMessage::where(function ($query) use ($appUserId) {
+                $query->where('from', $appUserId);
+                $query->orwhere('to', $appUserId);
+            })
+                ->where('object_id', $objectId)
+                ->where('object_type', $objectType)
+            ->update([
+                'unread' => false,
+            ]);
+
+
             $chats = ChatMessage::where('id', '>', $lastId)->where(function ($query) use ($appUserId) {
                 $query->where('from', $appUserId);
                 $query->orwhere('to', $appUserId);

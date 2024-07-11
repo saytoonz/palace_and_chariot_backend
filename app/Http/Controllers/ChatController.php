@@ -109,6 +109,10 @@ class ChatController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate($quantity);
 
+
+                //Update chatlist unread quantity
+                //That is what user app uses to check
+                // unread messages
                 ChatList::where('owner', $appUserId)
                 ->where('object_id', $objectId)
                 ->where('object_type', $objectType)
@@ -138,6 +142,9 @@ class ChatController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate(100);
 
+                //Update chatlist unread quantity
+                //That is what user app uses to check
+                // unread messages
                 ChatList::where('owner', $appUserId)
                 ->where('object_id', $objectId)
                 ->where('object_type', $objectType)
