@@ -14,10 +14,10 @@ class ImageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return[
+        return [
             'id' => $this->id,
-            'image' =>env('APP_URL').$this->image,
-            'object_id' =>(int) $this->object_id,
+            'image' =>  str_contains($this->image, env('APP_URL')) ? $this->image :  env('APP_URL') . $this->image,
+            'object_id' => (int) $this->object_id,
             'object_type' => $this->object_type,
             'status' => $this->status,
         ];
