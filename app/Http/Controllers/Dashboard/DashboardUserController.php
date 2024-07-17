@@ -85,14 +85,18 @@ class DashboardUserController extends Controller
                 'device' => $request->header('User-Agent'),
             ]);
 
+            $isFirstLogin = $dashUser->last_login == NULL;
+
             $dashUser->country = $country;
             $dashUser->last_login = date('Y-m-d H:i:s');
             $dashUser->save();
 
+            if($isFirstLogin){
+                $dashUser->last_login = NULL;
+            }
             return response()->json([
                 "error" => false,
                 'msg' => "success",
-                // 'data' => new DashboardUserResources($dashUser->refresh()),
                 'data' => new DashboardUserResources($dashUser),
             ]);
         } else {
