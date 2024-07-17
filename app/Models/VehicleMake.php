@@ -9,6 +9,8 @@ class VehicleMake extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function rents(){
         return $this->hasMany(VehicleRent::class);
     }

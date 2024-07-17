@@ -179,5 +179,6 @@ Route::prefix('dashboard')->group(function (){
 
 
     Route::get('get-all-vehicle-makes', [VehicleMakeController::class, 'getAllMakes']);
+    Route::post('add-vehicle-make', [VehicleMakeController::class, 'addVehicleMake']);
 });
 
