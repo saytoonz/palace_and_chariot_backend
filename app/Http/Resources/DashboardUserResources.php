@@ -33,6 +33,7 @@ class DashboardUserResources extends JsonResource
             "request_change_notifiction"=> $this->request_change_notifiction == 1,
             "email_notifiction"=> $this->email_notifiction == 1,
             "is_deleted"=> $this->is_deleted == 1,
+            "serverToken" => "BI193ZpDFuhV43aHz17EnU3h4FCK2-WODnh-gbvP4SUPbZhasf2pjYdh1oxl24i4TflXLsu84XjgM_adhG8Bf_4",
         ];
     }
 }
