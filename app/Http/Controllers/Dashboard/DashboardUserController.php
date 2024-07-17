@@ -26,6 +26,9 @@ class DashboardUserController extends Controller
             [
                 'email' => ['required', 'max:255', 'email', 'string', 'unique:dashboard_users'],
                 'password' => ['required', 'min:6', 'max:255', 'string'],
+                'first_name' => ['required', 'string'],
+                'last_name' => ['required', 'string'],
+                'employee_id' => ['required', 'string'],
             ],
         );
 
@@ -39,6 +42,9 @@ class DashboardUserController extends Controller
         $dashUser = DashboardUser::create([
             'email' => $request->email,
             'password' => md5(sha1($request->password)),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'employee_id' => $request->employee_id,
         ]);
 
         return response()->json([
@@ -86,7 +92,8 @@ class DashboardUserController extends Controller
             return response()->json([
                 "error" => false,
                 'msg' => "success",
-                'data' => new DashboardUserResources($dashUser->refresh()),
+                // 'data' => new DashboardUserResources($dashUser->refresh()),
+                'data' => new DashboardUserResources($dashUser),
             ]);
         } else {
             return response()->json([
@@ -223,11 +230,11 @@ class DashboardUserController extends Controller
                 'dashboard_user_id' => ['required',  'int'],
                 'first_name' => ['required'],
                 'last_name' => ['required'],
-                'phone' => ['required'],
-                'date_of_birth' => ['required'],
-                'gender' => ['required'],
+                // 'phone' => ['required'],
+                // 'date_of_birth' => ['required'],
+                // 'gender' => ['required'],
                 'employee_id' => ['required'],
-                'date_employed' => ['required'],
+                // 'date_employed' => ['required'],
             ],
         );
 
