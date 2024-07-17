@@ -230,10 +230,10 @@ class DashboardUserController extends Controller
                 'dashboard_user_id' => ['required',  'int'],
                 'first_name' => ['required'],
                 'last_name' => ['required'],
+                'employee_id' => ['required'],
                 // 'phone' => ['required'],
                 // 'date_of_birth' => ['required'],
                 // 'gender' => ['required'],
-                'employee_id' => ['required'],
                 // 'date_employed' => ['required'],
             ],
         );
