@@ -52,8 +52,8 @@ Route::prefix('app')->group(function (){
     Route::post('delete-account', [AppUserController::class, 'deleteMyAccount']);
 
 
-    Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
     Route::post('push-notification-token', [AppUserController::class, 'updatePushNotificationToken']);
+    Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
 
 
     ///Vehicles
