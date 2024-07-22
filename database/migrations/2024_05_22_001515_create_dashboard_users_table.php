@@ -37,6 +37,7 @@ return new class extends Migration
             //
             $table->enum('status', ['active', 'inactive', 'pending'])->default('pending');
             $table->boolean('is_deleted')->default(false);
+            $table->text('noti_token')->nullable();
             $table->timestamps();
         });
     }

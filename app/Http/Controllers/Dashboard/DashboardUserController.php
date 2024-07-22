@@ -614,4 +614,48 @@ class DashboardUserController extends Controller
             ]);
         }
     }
+
+
+
+
+    //
+    // Update push Notification Tokenw
+    public function updatePushNotificationToken(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'dashboard_user_id' => ['required',  'int'],
+                'noti_token' => ['required'],
+            ],
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                'msg' => $validator->errors()->first(),
+            ]);
+        }
+
+        $dashUser = DashboardUser::where('id', $request->dashboard_user_id)->where('is_deleted', false)->first();
+
+        if ($dashUser) {
+            if ($request->noti_token) {
+                $usrArray["noti_token"] = $request->noti_token;
+            }
+
+            $dashUser->update($usrArray);
+
+            return response()->json([
+                'error' => false,
+                'msg' => "success",
+                'data' => "token updated successfully"
+            ]);
+        } else {
+            return response()->json([
+                'error' => true,
+                'msg' => "No user found",
+            ]);
+        }
+    }
 }

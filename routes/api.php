@@ -53,6 +53,8 @@ Route::prefix('app')->group(function (){
 
 
     Route::post('update-user-notification', [AppUserNotificationController::class, 'update']);
+    Route::post('push-notification-token', [AppUserController::class, 'updatePushNotificationToken']);
+
 
     ///Vehicles
     //- Rentals
@@ -176,9 +178,9 @@ Route::prefix('dashboard')->group(function (){
     Route::post('update-rent-accommodation-product', [ProductController::class, 'updateRentAccommodationProduct']);
     Route::post('update-rent-event-service', [ProductController::class, 'updateRentEventServiceProduct']);
 
-
-
     Route::get('get-all-vehicle-makes', [VehicleMakeController::class, 'getAllMakes']);
     Route::post('add-vehicle-make', [VehicleMakeController::class, 'addVehicleMake']);
+
+    Route::post('push-notification-token', [DashboardUserController::class, 'updatePushNotificationToken']);
 });
 

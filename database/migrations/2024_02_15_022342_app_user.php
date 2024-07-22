@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('date_of_birth')->nullable();
             $table->string('gender')->nullable();
             $table->string('image')->nullable();
+            $table->string('noti_token')->nullable();
             $table->string('language')->default('english');
             $table->boolean('is_active')->default(true);
             $table->boolean('is_banned')->default(false);
