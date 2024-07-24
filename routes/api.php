@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 use Intervention\Image\Laravel\Facades\Image;
 
+use App\Traits\NotificationsTrait;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::prefix('notifications')->group(function (){
+    Route::post('/send-push', [AppUserNotificationController::class, 'sendNotification']);
+});
 
 Route::prefix('app')->group(function (){
     Route::post('create-user', [AppUserController::class, 'create']);
@@ -123,8 +127,6 @@ Route::prefix('app')->group(function (){
     Route::get('get-object/{object_id}/{object_type}', [SharedController::class, 'getObject']);
 
 });
-
-
 
 
 Route::prefix('dashboard')->group(function (){

@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AppUserResources;
 use App\Models\AppUser;
+use App\Traits\NotificationsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AppUserNotificationController extends Controller
 {
+
+    use NotificationsTrait;
+
     //
     public function update(Request $request)
 {
@@ -82,4 +86,8 @@ class AppUserNotificationController extends Controller
 
 
 }
+
+    function sendNotification()  {
+        return $this->sendPushNotification();
+    }
 }
