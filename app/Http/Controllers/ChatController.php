@@ -116,6 +116,7 @@ class ChatController extends Controller
                 ChatList::where('owner', $appUserId)
                 ->where('object_id', $objectId)
                 ->where('object_type', $objectType)
+                ->where('unread' ,'>', 0)
                 ->update([
                     'unread' => 0
                 ]);
