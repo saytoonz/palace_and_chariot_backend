@@ -88,6 +88,10 @@ class AppUserNotificationController extends Controller
 }
 
     function sendNotification()  {
-        return $this->sendPushNotification();
+        return $this->sendTokenPushNotification(
+          "cLObSIS4SwKytWuRTNiZBf:APA91bHeCPanOibmOUtq0it1UZYozXx41LQhdybj_3cCu_IG2y6FWoi-2hE_zuN4lZ3AF-c1EcCzZT45U385S4L-bhAgl0PBowwntpbuV2oGH-MVmpsT2NnMhkJDa7Fbk4r9vMky-znQ",
+          'Just title',
+          'Body goes in here',
+        );
     }
 }

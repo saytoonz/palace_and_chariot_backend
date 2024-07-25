@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait NotificationsTrait
 {
-    public function sendPushNotification()
+    public function sendTokenPushNotification($userToken, $title, $body)
     {
         $credentialsFilePath =   storage_path('app/fcm.json');
         $client = new \Google_Client();
@@ -25,10 +25,10 @@ trait NotificationsTrait
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
                 "message": {
-                    "token": "cLObSIS4SwKytWuRTNiZBf:APA91bHeCPanOibmOUtq0it1UZYozXx41LQhdybj_3cCu_IG2y6FWoi-2hE_zuN4lZ3AF-c1EcCzZT45U385S4L-bhAgl0PBowwntpbuV2oGH-MVmpsT2NnMhkJDa7Fbk4r9vMky-znQ",
+                    "token": "'.$userToken.'",
                     "notification": {
-                        "body": "Bring me the phone now!!!",
-                        "title": "Hey Madam Esther"
+                        "title": "'.$title.'",
+                        "body": "'.$body.'"
                     }
                 }
             }',
