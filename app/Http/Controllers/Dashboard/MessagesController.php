@@ -7,11 +7,13 @@ use App\Http\Resources\ChatResource;
 use App\Http\Resources\DashboardChatResource;
 use App\Models\ActivityLog;
 use App\Models\AppUser;
+use App\Models\AppUserNotification;
 use App\Models\ChatList;
 use App\Models\ChatMessage;
 use App\Models\DashboardUser;
 use App\Traits\ApiResponseTrait;
 use App\Traits\CountryTrait;
+use App\Traits\NotificationsTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,8 +22,9 @@ class MessagesController extends Controller
 
 {
 
-use ApiResponseTrait;
-use CountryTrait;
+    use ApiResponseTrait;
+    use CountryTrait;
+    use NotificationsTrait;
 
     public function getChatList()
     {
@@ -38,7 +41,6 @@ use CountryTrait;
                 'number_per_page' => $list->perPage(),
                 'total_items' => $list->total(),
             ];
-
         } catch (\Throwable $th) {
             // throw $th;
             $response["error"] = true;
@@ -74,22 +76,22 @@ use CountryTrait;
             if ($chat) {
                 $chatListItem =
 
-                ChatList::updateOrCreate(
-                    [
-                        'owner' => request('to'),
-                        'object_type' => request('object_type'),
-                        'object_id' => request('object_id'),
-                    ],
-                    [
-                        'owner' => request('to'),
-                        'from' => request('to'),
-                        'admin' => request('from'),
-                        'message' => request('message'),
-                        'object_id' => request('object_id'),
-                        'object_type' => request('object_type'),
+                    ChatList::updateOrCreate(
+                        [
+                            'owner' => request('to'),
+                            'object_type' => request('object_type'),
+                            'object_id' => request('object_id'),
+                        ],
+                        [
+                            'owner' => request('to'),
+                            'from' => request('to'),
+                            'admin' => request('from'),
+                            'message' => request('message'),
+                            'object_id' => request('object_id'),
+                            'object_type' => request('object_type'),
 
-                    ],
-                );
+                        ],
+                    );
 
 
 
@@ -102,7 +104,7 @@ use CountryTrait;
                 ActivityLog::create([
                     'dashboard_user_id' => $request->admin,
                     'app_user_id' => $request->to,
-                    'activity' => 'Responded to a message from ['.$appUser->first_name.' '.$appUser->last_name.']',
+                    'activity' => 'Responded to a message from [' . $appUser->first_name . ' ' . $appUser->last_name . ']',
                     'country' => $dashUser->country,
                     'device' => $request->header('User-Agent'),
                 ]);
@@ -110,10 +112,14 @@ use CountryTrait;
 
 
 
-                // $notifs = Notification::where("uid", request('to'))->get()->first();
-                // if ($notifs && $notifs->push_messages == 1) {
-                //     (new PushNotificationController)->SendPush(request('to'), "chat");
-                // }
+                $notifs = AppUserNotification::where("app_user_id", $appUser->id)->get()->first();
+                if ($notifs && $notifs->chat_box == 1 && $appUser->noti_token) {
+                    $this->sendTokenPushNotification(
+                        $appUser->noti_token,
+                        "New message",
+                        request('message'),
+                    );
+                }
             }
             return response()->json([
                 'error' => false,
@@ -137,10 +143,10 @@ use CountryTrait;
             //Update Chat messages set unread to false
             //That is what dashboard uses to check
             // unread messages
-                ChatMessage::where('from', $appUserId)
+            ChatMessage::where('from', $appUserId)
                 ->where('object_id', $objectId)
                 ->where('object_type', $objectType)
-                ->update(['unread' => false]) ;
+                ->update(['unread' => false]);
 
 
             $chats = ChatMessage::where(function ($query) use ($appUserId) {
@@ -169,9 +175,9 @@ use CountryTrait;
             //That is what dashboard uses to check
             // unread messages
             ChatMessage::where('from', $appUserId)
-            ->where('object_id', $objectId)
-            ->where('object_type', $objectType)
-            ->update(['unread' => false]) ;
+                ->where('object_id', $objectId)
+                ->where('object_type', $objectType)
+                ->update(['unread' => false]);
 
 
             $chats = ChatMessage::where('id', '>', $lastId)->where(function ($query) use ($appUserId) {
@@ -192,5 +198,4 @@ use CountryTrait;
             return $response;
         }
     }
-
 }

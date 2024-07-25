@@ -6,6 +6,34 @@ trait NotificationsTrait
 {
     public function sendTokenPushNotification($userToken, $title, $body)
     {
+
+        return $this->sendPush('{
+                "message": {
+                    "token": "' . $userToken . '",
+                    "notification": {
+                        "title": "' . $title . '",
+                        "body": "' . $body . '"
+                    }
+                }
+            }');
+    }
+
+    public function sendTopicPushNotification($topic, $title, $body, $data = '')
+    {
+
+        return $this->sendPush('{
+                "message": {
+                    "topic": "' . $topic . '",
+                    "notification": {
+                        "title": "' . $title . '",
+                        "body": "' . $body . '"
+                    }
+                }
+            }');
+    }
+
+    function sendPush($data)
+    {
         $credentialsFilePath =   storage_path('app/fcm.json');
         $client = new \Google_Client();
         $client->setAuthConfig($credentialsFilePath);
@@ -23,15 +51,7 @@ trait NotificationsTrait
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{
-                "message": {
-                    "token": "'.$userToken.'",
-                    "notification": {
-                        "title": "'.$title.'",
-                        "body": "'.$body.'"
-                    }
-                }
-            }',
+            CURLOPT_POSTFIELDS => $data,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Authorization: Bearer ' . $token['access_token'],
