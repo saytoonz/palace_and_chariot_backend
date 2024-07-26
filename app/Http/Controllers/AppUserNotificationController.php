@@ -87,16 +87,21 @@ class AppUserNotificationController extends Controller
 
     function sendNotification(Request $request)
     {
-        // return $this->sendTokenPushNotification(
-        //   $request->token,
-        //   $request->title,
-        //   $request->body,
-        // );
 
-        return $this->sendTopicPushNotification(
-            $request->topic,
+        if(isset($request->token) && $request->token != NULL && $request->token != '') {
+            return $this->sendTokenPushNotification(
+            $request->token,
             $request->title,
             $request->body,
-        );
+            );
+        }
+
+        if(isset($request->topic) && $request->topic != NULL && $request->topic != '') {
+            return $this->sendTopicPushNotification(
+                $request->topic,
+                $request->title,
+                $request->body,
+            );
+        }
     }
 }
