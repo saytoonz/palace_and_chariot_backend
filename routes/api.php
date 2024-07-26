@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('notifications')->group(function (){
     Route::post('/send-push', [AppUserNotificationController::class, 'sendNotification']);
+    // Route::post('/send-in-app', [InAppNotificationController::class, 'createInApp']);
 });
 
 Route::prefix('app')->group(function (){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\InAppNotificationController;
 use App\Http\Resources\AccommodationSaleResource;
 use App\Http\Resources\ApartmentRentResource;
 use App\Http\Resources\EventServiceRentResource;
@@ -24,6 +25,7 @@ use App\Models\VehicleRent;
 use App\Models\VehicleSale;
 use App\Models\VehicleTextKey;
 use App\Traits\ImageTrait;
+use App\Traits\NotificationsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -125,7 +127,7 @@ class ProductController extends Controller
                 'image' => trim($imagePath),
             ],);
         }
-        return true;
+        return $imagePaths[0];
     }
 
     private function saveTextKeys($textKeys,  $objectId, $objectType)
@@ -224,6 +226,16 @@ class ProductController extends Controller
         $images = $this->saveImageList($request->images,  $data->id, 'tour');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    'Tourism',
+                    'We have ' . $request->discount . '% discount on ' . $request->title,
+                    $data->id,
+                    'tour',
+                    $images,
+                    'travel_tour',
+                );
+            }
             return response()->json([
                 "error" => false,
                 'msg' => new TourismResource($data->refresh()),
@@ -262,6 +274,15 @@ class ProductController extends Controller
         $reqData = $request->except(['logged_in_user_id']);
         $data  = Security::create($reqData);
         if ($data) {
+            (new InAppNotificationController)->createInApp(
+                'Security',
+                'You can now request for ' . $request->title,
+                $data->id,
+                'security',
+                $request->image,
+                'security',
+            );
+
             return response()->json([
                 "error" => false,
                 'msg' => new SecurityResource($data->refresh()),
@@ -317,6 +338,17 @@ class ProductController extends Controller
         $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_vehicle');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    'Sales',
+                    'We have ' . $request->discount . '% discount on ' . $request->name,
+                    $data->id,
+                    'sale_vehicle',
+                    $images,
+                    'sales',
+                );
+            }
+
             return response()->json([
                 "error" => false,
                 'msg' => new VehicleSaleResource($data->refresh()),
@@ -370,6 +402,17 @@ class ProductController extends Controller
         $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_accomm');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    'Sales',
+                    'We have ' . $request->discount . '% discount on ' . $request->name,
+                    $data->id,
+                    'sale_accomm',
+                    $images,
+                    'sales',
+                );
+            }
+
             return response()->json([
                 "error" => false,
                 'msg' => new AccommodationSaleResource($data->refresh()),
@@ -429,6 +472,17 @@ class ProductController extends Controller
         $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'vehicle_rent');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    $request->type == 'bus' ? 'Bus rentals' : ($request->type == 'jet'  ? 'Private Jet' : 'Car Rental'),
+                    'We have ' . $request->discount . '% discount on ' . $request->name,
+                    $data->id,
+                    'rent_vehicle',
+                    $images,
+                    'rentals',
+                );
+            }
+
             return response()->json([
                 "error" => false,
                 'msg' => new VehicleRentResource($data->refresh()),
@@ -528,30 +582,6 @@ class ProductController extends Controller
             "error" => true,
             'msg' => "Error occurred while creating product.",
         ]);;
-
-        // $data  = AccommodationSale::create([
-        //     'name' => $request->name,
-        //     'region' => $request->region,
-        //     'city' => $request->city,
-        //     'price' => $request->price,
-        //     'discount' => $request->discount,
-        //     'status' => $request->status,
-        // ]);
-        //
-        // $textKeys = $this->saveTextKeys($request->text_keys,  $data->id, 'sale_accomm');
-        // $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_accomm');
-
-        // if ($data &&  $images) {
-        //     return response()->json([
-        //         "error" => false,
-        //         'msg' => new AccommodationSaleResource($data->refresh()),
-        //     ]);
-        // } else {
-        //     return response()->json([
-        //         "error" => true,
-        //         'msg' => "Error occurred while creating product.",
-        //     ]);;
-        // }
     }
 
     function createRentEventServiceProduct(Request $request)
@@ -643,6 +673,16 @@ class ProductController extends Controller
         $images = $this->saveImageList($request->images,  $data->id, 'tour');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    'Tourism',
+                    'We have ' . $request->discount . '% discount on ' . $request->title,
+                    $data->id,
+                    'tour',
+                    $images,
+                    'travel_tour',
+                );
+            }
             return response()->json([
                 "error" => false,
                 'msg' => new TourismResource($data->refresh()),
@@ -743,6 +783,16 @@ class ProductController extends Controller
         $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_vehicle');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    'Sales',
+                    'We have ' . $request->discount . '% discount on ' . $request->name,
+                    $data->id,
+                    'sale_vehicle',
+                    $images,
+                    'sales',
+                );
+            }
             return response()->json([
                 "error" => false,
                 'msg' => new VehicleSaleResource($data->refresh()),
@@ -798,6 +848,17 @@ class ProductController extends Controller
         $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'sale_accomm');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    'Sales',
+                    'We have ' . $request->discount . '% discount on ' . $request->name,
+                    $data->id,
+                    'sale_accomm',
+                    $images,
+                    'sales',
+                );
+            }
+
             return response()->json([
                 "error" => false,
                 'msg' => new AccommodationSaleResource($data->refresh()),
@@ -858,6 +919,17 @@ class ProductController extends Controller
         $imageKeys = $this->saveImageKeys($request->image_Keys,  $data->id, 'vehicle_rent');
 
         if ($data &&  $images) {
+            if ($request->send_discount_notification && $request->discount > 0) {
+                (new InAppNotificationController)->createInApp(
+                    $request->type == 'bus' ? 'Bus rentals' : ($request->type == 'jet'  ? 'Private Jet' : 'Car Rental'),
+                    'We have ' . $request->discount . '% discount on ' . $request->name,
+                    $data->id,
+                    'rent_vehicle',
+                    $images,
+                    'rentals',
+                );
+            }
+
             return response()->json([
                 "error" => false,
                 'msg' => new VehicleRentResource($data->refresh()),
@@ -1007,7 +1079,7 @@ class ProductController extends Controller
                 "error" => false,
                 'msg' => new EventServiceRentResource($data->refresh()),
             ]);
-        }else{
+        } else {
             return response()->json([
                 "error" => true,
                 'msg' => "Error occurred while creating product.",
